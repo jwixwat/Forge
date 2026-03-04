@@ -1,10 +1,10 @@
-# Adaptive Learning Controller Build Coordination (vNext)
+# Adaptive Learning Controller Build Coordination
 
-This document coordinates staged implementation of the **vNext closed‑loop learning controller** you described (factorized belief state + probe‑family sensor models + residual separation + calibrated forecasting + exploration support + anchors/holdouts/adversarial + drift fixtures + DAG backchaining + anomaly/taxonomy governance + sim/OPE).
+This document coordinates staged implementation of the closed-loop learning controller you described (factorized belief state + probe-family sensor models + residual separation + calibrated forecasting + exploration support + anchors/holdouts/adversarial + drift fixtures + DAG backchaining + anomaly/taxonomy governance + sim/OPE).
 
-It is intentionally **non‑technical**: no schemas, APIs, or code structure details appear here. Use it to align build order, dependencies, validation gates, and “don’t-break” invariants over a long build.
+It is intentionally **non-technical**: no schemas, APIs, or code structure details appear here. Use it to align build order, dependencies, validation gates, and "don't-break" invariants over a long build.
 
-Complexity key: **S** = contained, **M** = cross‑cutting, **L** = heavy tuning/robustness.
+Complexity key: **S** = contained, **M** = cross-cutting, **L** = heavy tuning/robustness.
 
 ---
 
@@ -35,10 +35,10 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 ### Key mechanisms (must remain intact)
 
 * **Belief as forecasting engine**: posterior must predict future measurement outcomes; monitored with proper scoring rules.
-* **Evidence channels**: anchor / measurement / learning / shadow; diagnosis only from closed‑book channels A/B/D.
+* **Evidence channels**: anchor / measurement / learning / shadow; diagnosis only from closed-book channels A/B/D.
 * **Residual separation with mechanical definitions**: `model mismatch` vs `sensor unreliable` vs `spec underdetermined`, with invariant routing behavior.
 * **Probe-family sensor models**: explicit, testable likelihoods; factor-first inference substrate; leaf modes are compiled views.
-* **Non-invariance layer**: “item weirdness” and item offsets prevent misattributing item defects to learner factors.
+* **Non-invariance layer**: "item weirdness" and item offsets prevent misattributing item defects to learner factors.
 * **Exploration substrate**: action selection is stochastic with minimum entropy; full propensities logged.
 * **Holdouts as consumables** + contamination index.
 * **Sentinel fixtures** are fixed inputs (CI + runtime self-tests), not learner items.
@@ -77,7 +77,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 ### Semantic contract (dangerous fields)
 
-* **“Mastery/readiness”** is *not truth*; it’s a decision statistic. Must be anchored and calibrated.
+* **"Mastery/readiness"** is *not truth*; it's a decision statistic. Must be anchored and calibrated.
 * **Factor posteriors** are *forecasting parameters*, not ground truth about cognition.
 * **Leaf modes** are *UI views* only; must never become the inference substrate.
 * **Shortcut resistance score** is a *guardrail*, not an optimization target.
@@ -87,8 +87,8 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 ### Anti-goals
 
-* Not a “flashcard app” with pretty UI and ungrounded mastery bars.
-* Not a deterministic curriculum that “feels smart” but has no support for offline evaluation.
+* Not a "flashcard app" with pretty UI and ungrounded mastery bars.
+* Not a deterministic curriculum that "feels smart" but has no support for offline evaluation.
 * Not a system that diagnoses based on open-book or tool-assisted performance without explicit semantics.
 * Not a taxonomy that grows without proving predictive/transfer value.
 
@@ -96,13 +96,13 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 ## 2) Dependency-ordered build plan by stage
 
-### Stage v0 — Epistemic Spine + First Vertical Slice (end-to-end loop you can trust)
+### Stage v0 - Epistemic Spine + First Vertical Slice (end-to-end loop you can trust)
 
-**Goal:** run complete sessions with reliable logging, deterministic grading, evidence channels, basic belief updates, and drift fixtures—before sophisticated control.
+**Goal:** run complete sessions with reliable logging, deterministic grading, evidence channels, basic belief updates, and drift fixtures-before sophisticated control.
 
 #### Risk register (v0)
 
-* Risk: “we can run a session” but logs aren’t rich enough to support calibration/OPE later.
+* Risk: "we can run a session" but logs aren't rich enough to support calibration/OPE later.
   Mitigation: bake propensities + grading signals + evidence channels in from day 1.
 * Risk: early LLM integration silently drives grading.
   Mitigation: deterministic-first invariant + fixture sentinels + explicit LLM versioning.
@@ -112,7 +112,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 * [x] Publish invariants checklist (above) as merge-gating criteria. *(spec complete in `docs/v0.0`)*
 * [x] Define safe-mode behaviors (format restriction, inference weight reduction, increased anchors/shadows). *(spec complete in `docs/v0.0`)*
 * [x] Define release discipline: every run is linked to versions (content + grader + sensor model). *(spec complete in `docs/v0.0`)*
-* Acceptance: a “panic switch” exists and produces predictable degraded behavior.
+* Acceptance: a "panic switch" exists and produces predictable degraded behavior.
 * Complexity: **S/M**.
 
 #### V0.1 Attempt ledger + state persistence spine
@@ -154,7 +154,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 * Acceptance: feedback execution is content-agnostic and fully traceable in logs.
 * Complexity: **M**.
 
-#### V0.6 Residuals vNext — mechanical computation + routing invariants (early!)
+#### V0.6 Residuals - mechanical computation + routing invariants (early!)
 
 * [ ] Implement mechanical residual computations:
 
@@ -163,9 +163,9 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
   * spec underdetermined from ambiguity signals.
 * [ ] Enforce invariant routing:
 
-  * spec underdetermined ⇒ quarantine (no learner penalty),
-  * sensor unreliable ⇒ safe mode + structured formats,
-  * model mismatch ⇒ anomaly queue.
+  * spec underdetermined => quarantine (no learner penalty),
+  * sensor unreliable => safe mode + structured formats,
+  * model mismatch => anomaly queue.
 * Acceptance: residuals are recomputable from logs; routing triggers are deterministic.
 * Complexity: **M**.
 
@@ -173,10 +173,10 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] Maintain per-commitment state (representation + factors + basic retention placeholders).
 * [ ] Use an explicit probe-family sensor model (even a small table) for updates.
-* Acceptance: belief updates are explainable, testable, and don’t depend on “LLM said so.”
+* Acceptance: belief updates are explainable, testable, and don't depend on "LLM said so."
 * Complexity: **M**.
 
-#### V0.8 Sentinel fixtures (fixed inputs) — CI gate + runtime self-test
+#### V0.8 Sentinel fixtures (fixed inputs) - CI gate + runtime self-test
 
 * [ ] Build fixture suite: correct/partial/incorrect/ambiguous/injection edge cases.
 * [ ] Run in CI for grading pipeline changes; periodically in runtime as self-test.
@@ -185,20 +185,20 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 #### V0.9 Sim harness skeleton (loop regression guard)
 
-* [ ] Implement a minimal simulator loop with 3–4 archetypes and grader noise.
-* [ ] Validate that routing doesn’t thrash and residual routing works.
+* [ ] Implement a minimal simulator loop with 3-4 archetypes and grader noise.
+* [ ] Validate that routing doesn't thrash and residual routing works.
 * Acceptance: basic regressions caught in sim before touching real users.
 * Complexity: **M**.
 
 ---
 
-### Stage v1 — Make Posteriors “Real”: Predictive Calibration + Exploration Support + Non‑Invariance Guards
+### Stage v1 - Make Posteriors "Real": Predictive Calibration + Exploration Support + Non-Invariance Guards
 
 **Goal:** beliefs become honest forecasts with calibration monitoring; policy decisions gain logged support; inference becomes robust to weird items.
 
 #### Risk register (v1)
 
-* Risk: beliefs look interpretable but aren’t predictively calibrated.
+* Risk: beliefs look interpretable but aren't predictively calibrated.
   Mitigation: posterior predictive checks with proper scoring rules are always-on.
 * Risk: offline evaluation is impossible because routing is deterministic.
   Mitigation: entropy floor + logged action distributions.
@@ -214,8 +214,8 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] For each (commitment, probe family) produce predicted distribution over next observation patterns.
 * [ ] Track log score/Brier (or equivalent) by strata (context, intervention, assistance mode).
-* [ ] Trigger calibration alarms → safe mode adjustments.
-* Acceptance: system detects “beautiful but wrong” beliefs early, even before holdouts trend down.
+* [ ] Trigger calibration alarms -> safe mode adjustments.
+* Acceptance: system detects "beautiful but wrong" beliefs early, even before holdouts trend down.
 * Complexity: **L**.
 
 #### V1.2 Exploration substrate (support for OPE)
@@ -225,19 +225,19 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 * Acceptance: offline policy evaluation is structurally possible (support exists).
 * Complexity: **M**.
 
-#### V1.3 Non‑invariance guardrails (item weirdness + offsets)
+#### V1.3 Non-invariance guardrails (item weirdness + offsets)
 
-* [ ] Track “item weirdness” (surprise under predicted strength) and family health signals.
+* [ ] Track "item weirdness" (surprise under predicted strength) and family health signals.
 * [ ] Maintain a lightweight item difficulty offset that can be updated online.
 * [ ] Quarantine items/families when weirdness accumulates.
 * Acceptance: inference stops blaming learners for broken/shifted items.
 * Complexity: **L**.
 
-#### V1.4 Safe-mode policy vNext (calibration-aware)
+#### V1.4 Safe-mode policy (calibration-aware)
 
 * [ ] Define graded safe mode levels based on drift and miscalibration.
 * [ ] Safe mode constrains formats, increases anchors/shadows, reduces diagnosis update weight.
-* Acceptance: miscalibration can’t silently continue; system degrades predictably.
+* Acceptance: miscalibration can't silently continue; system degrades predictably.
 * Complexity: **M**.
 
 #### V1.5 Sim harness expansion (calibration + invariance failures)
@@ -249,13 +249,13 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 ---
 
-### Stage v2 — Measurement Integrity: Holdouts as Consumables, Anchors, Shadow Probes, Procedural Adversaries
+### Stage v2 - Measurement Integrity: Holdouts as Consumables, Anchors, Shadow Probes, Procedural Adversaries
 
 **Goal:** independent measurement channels exist; contamination is tracked; anchor audits prevent controller Goodhart.
 
 #### Risk register (v2)
 
-* Risk: holdouts become training over time and “transfer” becomes a lie.
+* Risk: holdouts become training over time and "transfer" becomes a lie.
   Mitigation: consumable/parallel forms + delayed feedback + contamination index.
 * Risk: drift monitoring confounds learner change.
   Mitigation: fixtures (already) + anchors cross-graded.
@@ -287,7 +287,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] Add ultra-short, no-feedback probes with rotated formats.
 * [ ] Use them for calibration and diagnosis checks.
-* Acceptance: you can distinguish “learned from exposure” vs “measurement changed” better than weights alone.
+* Acceptance: you can distinguish "learned from exposure" vs "measurement changed" better than weights alone.
 * Complexity: **M**.
 
 #### V2.4 Micro-randomization + pre/post measurement pairs
@@ -307,7 +307,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 ---
 
-### Stage v3 — Control Plane: Stable Routing + DAG Backchaining With Edge Audits
+### Stage v3 - Control Plane: Stable Routing + DAG Backchaining With Edge Audits
 
 **Goal:** routing becomes stable and graph-aware; edges are treated as hypotheses and audited against counterfactual evidence.
 
@@ -322,7 +322,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] Implement the full action set: introduce/prime, measure, remediate, discriminate, backchain, anti-shortcut, depth audit, certify, defer.
 * [ ] Add plan blocks + hysteresis + switching costs.
-* Acceptance: routing is stable and doesn’t chase the last item.
+* Acceptance: routing is stable and doesn't chase the last item.
 * Complexity: **M/L**.
 
 #### V3.1 Portfolio controller: constraint-first planning under intent
@@ -336,14 +336,14 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 #### V3.2 DAG backchaining with confirmatory prereq probes
 
 * [ ] Maintain probabilistic prereq blocking hypotheses.
-* [ ] Never reroute upstream based on DAG priors alone—always confirm with prereq probes.
-* [ ] Allow “top-down bridges” with limited credit (domain-dependent).
+* [ ] Never reroute upstream based on DAG priors alone-always confirm with prereq probes.
+* [ ] Allow "top-down bridges" with limited credit (domain-dependent).
 * Acceptance: prereq routing is evidence-based, not structure-based.
 * Complexity: **M/L**.
 
 #### V3.3 Edge audit protocol + counterfactual backchaining tests
 
-* [ ] Track per-edge audit statistics (“downstream improves despite prereq fail?”).
+* [ ] Track per-edge audit statistics ("downstream improves despite prereq fail?").
 * [ ] Run randomized counterfactual tests when prereq fails (sometimes remediate downstream anyway).
 * [ ] Update edge blocking strength and edge uncertainty over time.
 * Acceptance: false upstream reroutes decrease; DAG becomes empirically grounded.
@@ -358,18 +358,18 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 ---
 
-### Stage v4 — Content Compiler + Governance: Spec Corruption Defense, Anomaly Lifecycle, Taxonomy Evolution, Migrations
+### Stage v4 - Content Compiler + Governance: Spec Corruption Defense, Anomaly Lifecycle, Taxonomy Evolution, Migrations
 
 **Goal:** robust content pipeline produces trustworthy IR; ontology evolves only when it improves predictions/transfer; state migrations are safe and capped.
 
 #### Risk register (v4)
 
-* Risk: spec corruption (wrong keys/rubrics) creates “truth drift” that evaluation can’t detect.
+* Risk: spec corruption (wrong keys/rubrics) creates "truth drift" that evaluation can't detect.
   Mitigation: multi-source generation + property tests + runtime anomaly detectors.
 * Risk: taxonomy bloat returns via leaf modes.
   Mitigation: factor-first inference + promotion gates tied to predictive calibration/transfer.
 
-#### V4.0 Compiler pipeline (source specs → versioned IR)
+#### V4.0 Compiler pipeline (source specs -> versioned IR)
 
 * [ ] Implement end-to-end compilation: items, rubrics, feedback policies, sensor priors, holdouts, anchors, fixtures, adversarial generators.
 * [ ] Enforce versioned outputs with migration metadata.
@@ -378,7 +378,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 #### V4.1 Family invariance & discriminability validation
 
-* [ ] Enforce invariance contracts within families; reject “garbage bucket” families.
+* [ ] Enforce invariance contracts within families; reject "garbage bucket" families.
 * [ ] Compute discriminability proxies (e.g., MI estimates) and require minimum thresholds.
 * Acceptance: probes are actually identifiable instruments, not just question piles.
 * Complexity: **L**.
@@ -387,17 +387,17 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] Independent generation + disagreement resolution for keys/rubrics/discriminators.
 * [ ] Property-based tests where executable semantics exist; otherwise structured adversarial checks.
-* Acceptance: wrong rubrics are caught before they become “truth.”
+* Acceptance: wrong rubrics are caught before they become "truth."
 * Complexity: **L**.
 
 #### V4.3 Runtime spec anomaly detectors + quarantine workflows
 
 * [ ] Detect items/families failing unexpectedly relative to anchors/holdouts and predicted strength.
 * [ ] Quarantine aggressively; tag content defects separately from learner deficits.
-* Acceptance: spec defects don’t silently poison learning and diagnosis.
+* Acceptance: spec defects don't silently poison learning and diagnosis.
 * Complexity: **M**.
 
-#### V4.4 Anomaly lifecycle: discovery → proposal → promotion gates
+#### V4.4 Anomaly lifecycle: discovery -> proposal -> promotion gates
 
 * [ ] Accumulate mismatch anomalies (not sensor/spec issues).
 * [ ] Offline clustering and hypothesis proposal (new factor or new leaf bundle).
@@ -409,19 +409,19 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] Immutable IDs + alias maps for merges.
 * [ ] Optional regrading of old logs under new model.
-* [ ] Capped re-estimation so schedules don’t chaos-reset.
+* [ ] Capped re-estimation so schedules don't chaos-reset.
 * Acceptance: no time-travel learner semantics; updates are explainable and reversible.
 * Complexity: **L**.
 
 ---
 
-### Stage v5 — Depth, Latent Contexts, Offline Policy Evaluation, Ops Maturity
+### Stage v5 - Depth, Latent Contexts, Offline Policy Evaluation, Ops Maturity
 
 **Goal:** depth audits are structured and safe; latent clusters are meaningful alerts; offline evaluation is usable; ops discipline prevents silent regressions.
 
 #### Risk register (v5)
 
-* Risk: depth audits become a Goodhart target (“learn to satisfy the grader’s aesthetic”).
+* Risk: depth audits become a Goodhart target ("learn to satisfy the grader's aesthetic").
   Mitigation: structured slots + deterministic checks + LLM coarse abstaining + tie weight to transfer.
 * Risk: clustering tracks style not cognition.
   Mitigation: structural features + stability checks; clusters are alerts, not truth.
@@ -430,7 +430,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] Require structured explanation slots; deterministic consistency checks.
 * [ ] LLM only coarse classify with abstention (coherent/incoherent/unclear).
-* [ ] Automatically downweight audit credit if it doesn’t predict transfer.
+* [ ] Automatically downweight audit credit if it doesn't predict transfer.
 * Acceptance: depth audits add signal without becoming an easy gaming channel.
 * Complexity: **M/L**.
 
@@ -445,7 +445,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 #### V5.2 Offline policy evaluation toolkit (OPE)
 
 * [ ] Use logged propensities to compare routing variants (with explicit support checks).
-* [ ] Produce “policy deltas” reports with uncertainty bounds and failure modes highlighted.
+* [ ] Produce "policy deltas" reports with uncertainty bounds and failure modes highlighted.
 * Acceptance: policy iteration is evidence-driven, not vibes-driven.
 * Complexity: **L**.
 
@@ -454,28 +454,28 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 * [ ] Reporting for predictive calibration by family/channel/assistance mode.
 * [ ] Reporting for drift fixture status, quarantine rates, anomaly rates, edge audit health, contamination-adjusted holdouts.
 * [ ] Release checklist binds versioned semantics to CI fixture passes and sim regressions.
-* Acceptance: operational changes can’t silently degrade epistemic integrity.
+* Acceptance: operational changes can't silently degrade epistemic integrity.
 * Complexity: **M**.
 
 ---
 
-### Stage Full — Scale-out + Long-Run Governance
+### Stage Full - Scale-out + Long-Run Governance
 
 **Goal:** scale content and domains while preserving epistemic integrity; harden the system for years of iteration.
 
 #### Full-1 Multi-domain scaling playbook
 
 * [ ] Authoring guidelines for commitments/probe families/factors/feedback.
-* [ ] QA gates and “reject reasons” for families (non-invariance, low discriminability, spec ambiguity).
+* [ ] QA gates and "reject reasons" for families (non-invariance, low discriminability, spec ambiguity).
 * [ ] Content production economics: parallel forms for holdouts; procedural adversaries; anchor sets.
-* Acceptance: scaling content doesn’t collapse measurement integrity.
+* Acceptance: scaling content doesn't collapse measurement integrity.
 * Complexity: **L**.
 
 #### Full-2 Human audit channel (optional but powerful)
 
 * [ ] Interface for occasional human-graded anchor audits.
 * [ ] Incorporate as privileged anchors without overusing (cost-aware quotas).
-* Acceptance: “ground truth anchors” exist beyond your grader stack.
+* Acceptance: "ground truth anchors" exist beyond your grader stack.
 * Complexity: **M/L**.
 
 #### Full-3 Model upgrades (only when they improve calibration/transfer)
@@ -489,7 +489,7 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 * [ ] Rate-limit ontology changes; promotion gates enforced; deprecation policy via alias maps.
 * [ ] Longitudinal monitoring of taxonomy growth, anomaly rates, and predictive fit.
-* Acceptance: ontology doesn’t bloat; semantics remain stable.
+* Acceptance: ontology doesn't bloat; semantics remain stable.
 * Complexity: **M/L**.
 
 ---
@@ -538,6 +538,6 @@ All gates are **prequential (forward-only)** and evaluated primarily on **anchor
 
 ---
 
-## One ordering note (why this is the “fastest manifold”)
+## One ordering note (why this is the "fastest manifold")
 
 The build order above deliberately front-loads the **epistemic spine** (logs, residual invariants, fixtures, deterministic-first) and the **truth-maintenance layer** (predictive calibration, exploration support, non-invariance guards) *before* sophisticated control and content scaling. That prevents rework and avoids building a high-velocity curriculum engine atop un-auditable measurement.

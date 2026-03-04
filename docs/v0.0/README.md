@@ -1,4 +1,4 @@
-# V0.0 Formal Spec Package
+﻿# V0.0 Formal Spec Package
 
 Status: Draft for implementation kickoff  
 Date: 2026-02-27  
@@ -20,10 +20,11 @@ This package executes the v0.0 planning scope without code implementation. It de
 ## Source Alignment
 
 - Build plan: `Forge_Build_Plan.md` stage `V0.0` and invariants checklist.
-- Blueprint: `blueprint.md` sections on North Star, evidence channels, `GradeResult vNext`, sentinel fixtures, mechanical residuals, and safe mode routing.
+- Blueprint: `blueprint.md` sections on North Star, evidence channels, `GradeResult`, sentinel fixtures, mechanical residuals, and safe mode routing.
 
 ## Non-Goals
 
 - No engine code changes.
 - No schema implementation in runtime/compiler.
 - No CI wiring in this step.
+

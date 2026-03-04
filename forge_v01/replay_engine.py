@@ -804,20 +804,45 @@ class ReplayEngine:
         ledger: LedgerStore,
     ) -> TimelineReplayResult:
         result = TimelineReplayResult(timeline_id=timeline_id)
-        manifests: list[dict[str, Any]] = []
-        for run_id in run_ids:
-            manifest = ledger.get_manifest(run_id)
-            manifests.append(manifest)
+        manifests: list[tuple[str, dict[str, Any]]] = []
+        for requested_run_id in run_ids:
+            manifest = ledger.get_manifest(requested_run_id)
+            manifests.append((requested_run_id, manifest))
 
-        manifests.sort(key=lambda m: int(m.get("epoch_index", 0)))
+        manifests.sort(
+            key=lambda pair: (
+                0
+                if is_strict_int(pair[1].get("epoch_index")) and int(pair[1].get("epoch_index")) > 0
+                else 1,
+                int(pair[1].get("epoch_index")) if is_strict_int(pair[1].get("epoch_index")) else 0,
+                str(pair[1].get("run_id", pair[0])),
+            )
+        )
         expected_epoch = 1
         predecessor_run_id: str | None = None
-        for manifest in manifests:
-            run_id = str(manifest.get("run_id"))
+        for requested_run_id, manifest in manifests:
+            manifest_run_id = manifest.get("run_id")
+            if not isinstance(manifest_run_id, str) or manifest_run_id == "":
+                result.errors.append(f"timeline:{timeline_id}:run_id_invalid:{requested_run_id}")
+                result.run_results.append(
+                    ReplayResult(
+                        run_id=requested_run_id,
+                        errors=["manifest:run_id_invalid_timeline_replay"],
+                    )
+                )
+                continue
+            run_id = manifest_run_id
             if manifest.get("timeline_id") != timeline_id:
                 result.errors.append(f"timeline:{timeline_id}:run_timeline_mismatch:{run_id}")
                 continue
             epoch_index = manifest.get("epoch_index")
+            if not is_strict_int(epoch_index) or epoch_index <= 0:
+                result.errors.append(f"timeline:{timeline_id}:epoch_index_invalid:{run_id}")
+                run_result = self.replay_run(run_id, ledger)
+                result.run_results.append(run_result)
+                if run_result.errors:
+                    result.errors.extend([f"run:{run_id}:{err}" for err in run_result.errors])
+                continue
             if epoch_index != expected_epoch:
                 result.errors.append(f"timeline:{timeline_id}:epoch_gap_or_duplicate:{run_id}")
             if expected_epoch == 1:

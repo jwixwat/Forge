@@ -25,7 +25,13 @@ def is_strict_int(value: Any) -> bool:
 
 
 def is_strict_number(value: Any) -> bool:
-    return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return False
+    try:
+        numeric = float(value)
+    except (OverflowError, ValueError):
+        return False
+    return math.isfinite(numeric)
 
 
 def is_probability(value: Any) -> bool:

@@ -1,4 +1,4 @@
-# Predicate Operationalization Matrix v0.0
+﻿# Predicate Operationalization Matrix v0.0
 
 Version: `0.0.0`  
 Effective date: `2026-02-27`  
@@ -25,7 +25,7 @@ Provide a deterministic query crosswalk for every invariant predicate so complia
 | INV-EPI-ANC-008 | anchor scheduling log, belief-audit log | `anchors_sampled`, `quota_min`, `window_id`, `belief_audit_record` | `time_windows` | Per time window, sampled anchors meet quota and a belief-audit record exists. | v2.2 | declared |
 | INV-EPI-NIV-009 | invariance log, quarantine events | `threshold_crossed`, `metric_id`, `scope_type`, `scope_id`, `threshold_config_version` | `threshold_crossings`, `quarantine_event_emitted(crossing)` | Every threshold crossing must have a matching quarantine event. | v1.3 | declared |
 | INV-OPS-VSN-010 | run manifest, attempt ledger, state snapshots | canonical/replay tuple fields, `run_id`, `version_pointers`, `residual_formula_version`, `json_canonicalization_version` | `has_version_tuple`, `has_replay_tuple`, `replay_tuple_projection`, `valid_manifest_ref` | Enforce run-manifest linkage, no mixed semantics, residual version equality, and canonicalization-version equality. | v0.0 | enforced |
-| INV-OPS-EPOCH-013 | run manifest, migrations, event ledger, run records | `timeline_id`, `epoch_index`, `predecessor_run_id`, `bootstrap_snapshot_ref`, `migration_event_id`, migration payload ids/hashes, event sequence | `epoch_is_initial`, `migration_precedes_attempts`, `timeline_records_scoped` | Enforce semantic-epoch lineage coherence and explicit migration-first cross-epoch state continuity. | vNext | declared; contracts frozen |
+| INV-OPS-EPOCH-013 | run manifest, migrations, event ledger, run records | `timeline_id`, `epoch_index`, `predecessor_run_id`, `bootstrap_snapshot_ref`, `migration_event_id`, migration payload ids/hashes, event sequence | `epoch_is_initial`, `migration_precedes_attempts`, `timeline_records_scoped` | Enforce semantic-epoch lineage coherence and explicit migration-first cross-epoch state continuity. | v0.1 | enforced through v0.1 integrity/replay gates |
 | INV-OPS-LOG-012 | state-update events | `diagnosis_log_write_status`, `log_commit_id`, `mutation_applied`, `integrity_event_id`, `update_id`, `state_patch.partition` | `diagnosis_state_updates` | Diagnosis mutation allowed only when required diagnosis-log write is committed. | v0.1 | contract frozen; gates declared |
 | INV-SAF-SFM-011 | safe-mode transition log, spec mapping | `prior_state`, `next_state`, `trigger_set`, `profile_id`, `policy_bundle_hash` | `spec_state`, `spec_profile`, `spec_policy_bundle_hash` | Recompute expected state/profile/bundle and require exact match for each transition. | v0.0 | enforced |
 
@@ -33,3 +33,4 @@ Provide a deterministic query crosswalk for every invariant predicate so complia
 
 - If an invariant has no row in this matrix, it is non-compliant with `G-MRG-V00-004`.
 - If required fields are missing from contracts at or before activation stage, the corresponding release/merge gate must fail.
+

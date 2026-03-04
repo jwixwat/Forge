@@ -35,7 +35,6 @@ class GateRunner:
         events: list[dict[str, Any]],
         telemetry_events: list[dict[str, Any]] | None = None,
         migrations: list[dict[str, Any]] | None = None,
-        include_future_gates: bool = False,
     ) -> list[GateResult]:
         if events is None:
             raise ValueError("events_required_for_gate_evaluation")
@@ -211,49 +210,6 @@ class GateRunner:
             )
         )
 
-        lineage_runtime_ok = audit_queries.migration_manifest_lineage_coherent(
-            manifest,
-            migrations_list,
-        )
-        lineage_runtime_ok = lineage_runtime_ok and audit_queries.timeline_records_consistent(
-            manifest,
-            attempts_list,
-            precommits_list,
-            telemetry_events_list,
-            snapshots_list,
-            updates_list,
-            migrations_list,
-            safe_mode_transitions,
-            quarantine_decisions,
-            anchor_audits,
-        )
-        if include_future_gates:
-            results.append(
-                GateResult(
-                    gate_id="G-RUN-VNEXT-LINEAGE",
-                    passed=canonical_events_ok and lineage_runtime_ok,
-                    details="run manifest lineage and timeline scoping are coherent for epoch continuity",
-                )
-            )
-
-        migseq_runtime_ok = True
-        migseq_details = "state migration event exists (for non-initial epochs) and precedes attempt precommits"
-        if canonical_events_ok:
-            migseq_runtime_ok = audit_queries.migration_event_precedes_attempts(
-                events, manifest
-            )
-        else:
-            migseq_runtime_ok = False
-            migseq_details = "event ledger integrity invalid for migration sequencing gate"
-        if include_future_gates:
-            results.append(
-                GateResult(
-                    gate_id="G-RUN-VNEXT-MIGSEQ",
-                    passed=migseq_runtime_ok,
-                    details=migseq_details,
-                )
-            )
-
         gov_runtime_ok = True
         gov_runtime_details = (
             "governance event payload contracts and safe-mode transition sequence are valid "
@@ -322,6 +278,11 @@ class GateRunner:
             replay_details = "replay ledger append failed during gate materialization"
             evord_ok = False
             evord_details = "event ledger materialization failed"
+        except (KeyError, TypeError, ValueError) as exc:
+            replaystate_ok = False
+            replay_details = f"replay gate materialization failed:{type(exc).__name__}"
+            evord_ok = False
+            evord_details = f"event ledger materialization failed:{type(exc).__name__}"
         results.append(
             GateResult(
                 gate_id="G-RUN-V01-EVORD",
@@ -454,7 +415,9 @@ class GateRunner:
         for attempt in attempts_list:
             attempt_errors = self._validator.validate_attempt(attempt, manifest)
             if any(
-                err.startswith(policydec_prefixes[0]) or err == policydec_prefixes[1]
+                err.startswith(policydec_prefixes[0])
+                or err == policydec_prefixes[1]
+                or err.startswith(policydec_prefixes[2])
                 for err in attempt_errors
             ):
                 policydec_ok = False

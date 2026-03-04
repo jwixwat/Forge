@@ -1,4 +1,4 @@
-# Merge and Release Gate Matrix v0.0
+﻿# Merge and Release Gate Matrix v0.0
 
 Version: `0.0.0`  
 Effective date: `2026-02-27`
@@ -36,12 +36,10 @@ This prevents accidental over-blocking before capabilities exist.
 | G-RUN-V01-REFINT | runtime | declared | v0.1 | state updates reference committed/valid source attempts and maintain partition authorization + diagnosis eligibility coherence (`diagnosis_state` updates require eligible closed-book diagnostic source attempts with telemetry-derived assistance) | abort run at v0.1 |
 | G-RUN-V01-UPDSNAPREF | runtime | declared | v0.1 | each state update `snapshot_id` references known snapshot lineage (`__genesis__` allowed) | abort run at v0.1 |
 | G-RUN-V01-GOVEVENTS | runtime | declared | v0.1 | governance events (`safe_mode_transition`, `quarantine_decision`, `anchor_audit`) satisfy mechanical payload contracts; safe-mode transition sequence is deterministic and state-coherent; each `state_update.safe_mode_profile_id` matches the active safe-mode transition profile in event order; and explicit `events` input is required | abort run at v0.1 |
-| G-RUN-VNEXT-LINEAGE | runtime | declared | vNext | manifest epoch lineage (`timeline_id`, `epoch_index`, predecessor/bootstrap/migration linkage) is coherent and all records in run share manifest timeline id | abort run |
-| G-RUN-VNEXT-MIGSEQ | runtime | declared | vNext | non-initial epochs include exactly one state migration event that occurs before first `attempt_precommitted`; explicit `events` input is required | abort run |
 | G-RUN-V01-EVORD | runtime | declared | v0.1 | event ledger integrity checks pass (`event_id` uniqueness, type-prefix namespace, `event_type` validity, header/payload run binding coherence, unique positive `ledger_sequence_no`, and non-decreasing `event_written_ts_utc` by sequence); replay ordering uses `ledger_sequence_no` + append-time metadata only | abort run at v0.1 |
-| G-RUN-V01-REPLAYSTATE | runtime | declared | v0.1 | deterministic replay over canonical event order must produce final state hash equal to the latest committed snapshot checkpoint hash (when checkpoint exists) | abort run at v0.1 |
+| G-RUN-V01-REPLAYSTATE | runtime | declared | v0.1 | deterministic replay over canonical event order must produce final state hash equal to the latest committed snapshot checkpoint hash (when checkpoint exists); for non-initial epochs replay requires manifest-declared migration coherence and migration-before-precommit sequencing | abort run at v0.1 |
 | G-RUN-V01-LOGATOMIC | runtime | declared | v0.1 | diagnosis-state mutation is allowed only when `diagnosis_log_write_status=committed`; failed/missing required diagnosis-log writes force `mutation_applied=false` and integrity event emission | abort mutation at v0.1 |
-| G-MRG-V01-LEDGER | merge | declared | v0.1 | attempt/precommit/telemetry/state contracts include required fields, idempotency keys, canonical/replay version pointers, no-mixed-semantics rules, complete telemetry-window integrity, and precommit binding integrity | block merge at v0.1 |
+| G-MRG-V01-LEDGER | merge | declared | v0.1 | attempt/precommit/telemetry/state contracts include required fields, idempotency keys, canonical/replay version pointers, no-mixed-semantics rules, complete telemetry-window integrity, precommit binding integrity, and epoch lineage/migration coherence for non-initial runs | block merge at v0.1 |
 | G-MRG-V01-POLICYDEC | merge | declared | v0.1 | attempt contracts include `policy_decisions[]` with required fields (`decision_id`, `outcome`, `commit_status`, support-check fields), `decision_traces.decision_id` join integrity, and baseline `trace_kind`/`policy_domain` semantic alignment | block merge at v0.1 |
 | G-MRG-V01-LOGATOMIC | merge | declared | v0.1 | state-update contracts include log-atomicity fields (`diagnosis_log_write_status`, `log_commit_id`, `mutation_applied`, `integrity_event_id`) and no-unlogged-mutation rules | block merge at v0.1 |
 | G-MRG-V01-REFINT | merge | declared | v0.1 | update bundles are referentially integral against validated attempt bundles with partition authorization and diagnosis semantics coherence | block merge at v0.1 |
@@ -85,9 +83,10 @@ This prevents accidental over-blocking before capabilities exist.
 - Exploration support is staged but claim semantics are strict: `propensity_only` means logs exist; `full_support` means target-kind overlap/support thresholds and support checks pass.
 - Canonical event-ledger input is mandatory for v0.1 gate evaluation; typed lists are auxiliary comparands for `G-*-EVTBIND` only.
 - Event-dependent gates are non-optional: missing event ledgers produce hard failure (or evaluation refusal), never green defaults.
-- Timestamp anti-time-travel checks are v0.1 integrity guards under an honest-clock assumption; stronger trusted-time authority is a vNext hardening item.
+- Timestamp anti-time-travel checks are v0.1 integrity guards under an honest-clock assumption; stronger trusted-time authority is a future hardening item.
 - Version pointers are integrity constraints, not metadata: no mixed semantics are allowed within a run.
 - Calibration is a governor, not only observability: persistent miscalibration must throttle/freeze diagnosis authority by stratum.
 - In `SG_CALIBRATION_GUARD`, diagnosis update multipliers are governed by the calibration ladder (`0.50`, `0.20`, `0.00`) and must be logged on each diagnosis-state update.
 - State mutation requires durable logging: no diagnosis-state update is valid unless required state-update log write is committed.
 - Predicate compliance is mechanical: undefined or interpretation-only predicate terms are non-compliant until operationalized in charter/matrix.
+

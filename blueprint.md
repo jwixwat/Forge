@@ -1,29 +1,29 @@
-Below is a **review** of the blueprint you posted, followed by a **next‑gen hardened blueprint (vNext)** that is **additive** (it only adds hardening features) and **lossless** (it preserves every deep architectural feature already present: factorized belief state, residual separation, probe‑family sensor models, DAG backchaining with confirmatory probes, portfolio constraints + agency, adversarial banks + holdouts + drift controls, versioned semantics/migrations, offline policy evaluation, and the sim red‑team harness).
+Below is a **review** of the blueprint you posted, followed by a **next-gen hardened blueprint** that is **additive** (it only adds hardening features) and **lossless** (it preserves every deep architectural feature already present: factorized belief state, residual separation, probe-family sensor models, DAG backchaining with confirmatory probes, portfolio constraints + agency, adversarial banks + holdouts + drift controls, versioned semantics/migrations, offline policy evaluation, and the sim red-team harness).
 
-I’ll keep the same “repo‑agent handoff” style: **module boundaries, explicit data contracts, deterministic vs LLM‑assisted separation, and a closed‑loop measurement/control story**—but upgraded to address the adversarial review.
+I'll keep the same "repo-agent handoff" style: **module boundaries, explicit data contracts, deterministic vs LLM-assisted separation, and a closed-loop measurement/control story**-but upgraded to address the adversarial review.
 
 ---
 
-## Review of your current blueprint (what’s already excellent, and what still breaks)
+## Review of your current blueprint (what's already excellent, and what still breaks)
 
-### What’s already load‑bearing and correct
+### What's already load-bearing and correct
 
 * **Probe families as the unit of measurement** + explicit `ProbeFamilySensorModel` is the right primitive for epistemic integrity.
 * **Factor layer for inference + leaf modes for UI/remediation** prevents taxonomy explosion and handles mixtures.
-* **Residual separation (`R_model_mismatch`, `R_sensor_unreliable`, `R_spec_underdetermined`)** is a crucial “don’t lie to yourself” design.
-* **Measurement vs teaching dose** via `purpose` and `intervention_level` is the right direction (you’re already modeling “measurement ≈ intervention”).
+* **Residual separation (`R_model_mismatch`, `R_sensor_unreliable`, `R_spec_underdetermined`)** is a crucial "don't lie to yourself" design.
+* **Measurement vs teaching dose** via `purpose` and `intervention_level` is the right direction (you're already modeling "measurement ~ intervention").
 * **Holdout / adversarial / sentinel concept** is the right triad for Goodhart + calibration + drift.
-* **Versioned semantics + migration discipline** avoids time‑traveling the learner state.
-* **Simulation harness as a first‑class dependency** is exactly how this doesn’t become a pretty UI atop epistemic sand.
+* **Versioned semantics + migration discipline** avoids time-traveling the learner state.
+* **Simulation harness as a first-class dependency** is exactly how this doesn't become a pretty UI atop epistemic sand.
 
-### The remaining “epistemic failure surface” (per red‑team)
+### The remaining "epistemic failure surface" (per red-team)
 
-Your core remaining vulnerability is that **beliefs can remain internally coherent while becoming predictively wrong**, and the system won’t necessarily notice quickly. This happens via:
+Your core remaining vulnerability is that **beliefs can remain internally coherent while becoming predictively wrong**, and the system won't necessarily notice quickly. This happens via:
 
 * **Calibration drift** (sensor tables wrong, weights wrong, contamination),
-* **Within‑family non‑invariance** (family becomes a garbage bucket),
-* **Intervention contamination** (even “retrieval only” is learning),
-* **Illusory off‑policy evaluation** (no support because the policy is near deterministic),
+* **Within-family non-invariance** (family becomes a garbage bucket),
+* **Intervention contamination** (even "retrieval only" is learning),
+* **Illusory off-policy evaluation** (no support because the policy is near deterministic),
 * **Residuals becoming vibes** (if not mechanically defined),
 * **Mode proliferation through the back door** (leaf modes become basis functions),
 * **DAG causal hallucinations** (edge assumptions not audited),
@@ -33,79 +33,79 @@ Your core remaining vulnerability is that **beliefs can remain internally cohere
 * **Latent clusters tracking style** (not cognitive demand),
 * **Depth audits Goodharting** (LLM aesthetic grading),
 * **External tool use** (belief semantics collapse unless explicit),
-* **Spec corruption** (wrong keys/rubrics are “truth drift”),
+* **Spec corruption** (wrong keys/rubrics are "truth drift"),
 * **Simulator overfit** (winning your own game),
 * **Controller Goodharting on belief stability** (prefers clean signals).
 
-The vNext blueprint below **bakes in explicit calibration targets, invariants, exploration support, non‑invariance modeling, experimental structure, fixture sentinels, holdout consumables, and auditable anchors**—without changing your teleology.
+The blueprint below **bakes in explicit calibration targets, invariants, exploration support, non-invariance modeling, experimental structure, fixture sentinels, holdout consumables, and auditable anchors**-without changing your teleology.
 
 ---
 
-# Blueprint vNext (2026‑02‑26): calibrated, exploration‑supported, non‑invariant‑robust closed loop
+# Blueprint (2026-02-26): calibrated, exploration-supported, non-invariant-robust closed loop
 
-## 0) North Star vNext: beliefs are forecasts over observables, audited by anchors
+## 0) North Star: beliefs are forecasts over observables, audited by anchors
 
 **Key reframing (additive):**
 
-> The belief state is not “truth about misconceptions.”
+> The belief state is not "truth about misconceptions."
 > It is a **forecasting engine** over future observation patterns under specified measurement channels.
 
-Your original constraint still holds (“belief must not be synonymous with LLM said so”), but vNext adds a stronger invariant:
+Your original constraint still holds ("belief must not be synonymous with LLM said so"), but this blueprint adds a stronger invariant:
 
-> **If the system’s posterior cannot predict next measurement‑dominant outcomes with calibrated uncertainty, it must downgrade its own belief and enter safe mode—even if factor semantics look plausible.**
+> **If the system's posterior cannot predict next measurement-dominant outcomes with calibrated uncertainty, it must downgrade its own belief and enter safe mode-even if factor semantics look plausible.**
 
-This single reframing prevents “beautiful but wrong” internal coherence.
+This single reframing prevents "beautiful but wrong" internal coherence.
 
 ---
 
 ## 1) System overview (pipeline + runtime loop), upgraded with calibration + support
 
-### 1.1 Build pipeline (offline / terminal) — vNext additions
+### 1.1 Build pipeline (offline / terminal) - additions
 
-You keep your compiler steps; vNext adds **three** new build products and **two** new validation layers:
+You keep your compiler steps; this blueprint adds **three** new build products and **two** new validation layers:
 
 **New build products**
 
 1. **Anchor channels** (privileged measurement fixtures):
 
-   * cross‑grader set (different grader model family or deterministic oracle where possible),
-   * closed‑book certification probes with fixed formats,
-   * optional human‑graded audit bundle interface (even if rarely used).
+   * cross-grader set (different grader model family or deterministic oracle where possible),
+   * closed-book certification probes with fixed formats,
+   * optional human-graded audit bundle interface (even if rarely used).
 
-2. **Posterior‑predictive calibration harness**:
+2. **Posterior-predictive calibration harness**:
 
    * definitions of calibration strata (context tags, intervention level, assistance mode),
-   * scoring rules to compute (log score / Brier / ECE‑style bins),
-   * per‑probe‑family expected difficulty envelope.
+   * scoring rules to compute (log score / Brier / ECE-style bins),
+   * per-probe-family expected difficulty envelope.
 
 3. **Procedural adversarial generators**:
 
-   * adversarial probes are not just a static bank; they’re **a generator with constraints** and rotation metadata.
+   * adversarial probes are not just a static bank; they're **a generator with constraints** and rotation metadata.
 
 **New validation layers**
-4. **Non‑invariance checks inside a family**:
+4. **Non-invariance checks inside a family**:
 
 * enforce family homogeneity constraints (signature bounds, response schema completeness, distractor entropy bands),
-* flag “family drift risk” before runtime.
+* flag "family drift risk" before runtime.
 
 5. **Spec corruption defenses**:
 
-   * multi‑source generation + disagreement resolution for answer keys/rubrics/discriminators,
-   * property‑based tests where executable semantics exist (formal domains),
-   * “spec anomaly detectors” trained on expected patterns (e.g., if many strong learners fail one item).
+   * multi-source generation + disagreement resolution for answer keys/rubrics/discriminators,
+   * property-based tests where executable semantics exist (formal domains),
+   * "spec anomaly detectors" trained on expected patterns (e.g., if many strong learners fail one item).
 
 Outputs remain:
 
 * `content_ir/` (versioned), `holdout_exam/`, `sentinel_calibration/`, `spec_versions/`
   but with new subtrees for **fixtures/anchors**, **calibration_defs**, **procedural_generators**.
 
-### 1.2 Runtime loop (CLI engine) — vNext loop structure
+### 1.2 Runtime loop (CLI engine) - loop structure
 
-You keep your runtime loop; vNext adds **explicit evidence channels, exploration, and predictive checks**:
+You keep your runtime loop; this blueprint adds **explicit evidence channels, exploration, and predictive checks**:
 
 For each session:
 
-1. **Intent + Assistance Mode input** (new; see §8):
+1. **Intent + Assistance Mode input** (new; see Section8):
 
    * `closed_book_measurement | open_book_learning | tool_assisted | mixed`
 2. Portfolio controller proposes a plan under constraints **including anchor quotas** and **minimum exploration entropy**.
@@ -117,19 +117,19 @@ For each session:
    * LLM as untrusted helper for parsing/classification (optional)
    * Produce observation vector
    * Compute residuals **mechanically**
-   * Update belief state via factor‑first sensor model with item offsets
+   * Update belief state via factor-first sensor model with item offsets
    * Execute feedback (logged with randomization probability if applicable)
 4. Periodically (by constraints, not optional):
 
    * **Shadow probes** (no feedback) for contamination resistance
    * **Anchor probes** (privileged channel) for belief audits
    * **Holdout exams** (consumable forms; delayed feedback)
-   * **Adversarial probes** (procedurally rotated; feedback‑minimal)
+   * **Adversarial probes** (procedurally rotated; feedback-minimal)
 5. After the session (or intermittently):
 
    * Run **posterior predictive checks**:
 
-     * compare predicted vs observed outcomes on subsequent measurement‑dominant probes,
+     * compare predicted vs observed outcomes on subsequent measurement-dominant probes,
      * update calibration dashboards,
      * trigger safe mode if miscalibrated.
 
@@ -137,7 +137,7 @@ For each session:
 
 ## 2) Evidence channels: what can update diagnosis vs only learning vs only auditing
 
-This is the simplest way to prevent “the controller Goodharts on belief stability” and to handle tool‑assistance honestly.
+This is the simplest way to prevent "the controller Goodharts on belief stability" and to handle tool-assistance honestly.
 
 ### 2.1 Evidence tiers (engine invariant)
 
@@ -145,10 +145,10 @@ Every item execution produces an `EvidenceRecord` with a `channel`:
 
 * **Channel A: Anchor Audit**
 
-  * closed‑book fixed‑format certification probes, cross‑grader checks, rare human‑graded audits.
+  * closed-book fixed-format certification probes, cross-grader checks, rare human-graded audits.
   * Purpose: **audit beliefs** and calibrate the whole system.
 
-* **Channel B: Measurement‑Dominant**
+* **Channel B: Measurement-Dominant**
 
   * normal measurement probes (slots/MCQ/free recall), possibly with minimal hints.
   * Purpose: **diagnosis + forecasting**.
@@ -165,19 +165,19 @@ Every item execution produces an `EvidenceRecord` with a `channel`:
 
 **Invariant**:
 
-* Diagnosis updates (factor posteriors) require **Channel A/B/D** and **closed‑book**.
+* Diagnosis updates (factor posteriors) require **Channel A/B/D** and **closed-book**.
 * Channel C updates representation/retention transitions, but its evidence weight is bounded.
 
-This is additive to your `w_evidence` / `w_learning` split, but stronger because it’s **channel‑based and assistance‑mode gated**.
+This is additive to your `w_evidence` / `w_learning` split, but stronger because it's **channel-based and assistance-mode gated**.
 
 ---
 
-## 3) Data contracts vNext (IR + runtime logs)
+## 3) Data contracts (IR + runtime logs)
 
-You already have strong IR schemas. vNext extends them with:
+You already have strong IR schemas. This blueprint extends them with:
 
 * **predictive calibration targets**
-* **item non‑invariance parameters**
+* **item non-invariance parameters**
 * **exploration support (action distributions)**
 * **mechanical residual definitions**
 * **holdout contamination and retirement**
@@ -186,7 +186,7 @@ You already have strong IR schemas. vNext extends them with:
 * **edge audit state**
 * **assistance mode contracts**
 
-### 3.1 `ItemSpec` vNext (add item parameters + forms + channel tags)
+### 3.1 `ItemSpec` (add item parameters + forms + channel tags)
 
 ```jsonc
 {
@@ -194,10 +194,10 @@ You already have strong IR schemas. vNext extends them with:
   "item_id": "it_star_00017",
   "probe_family_id": "pf_kleene_star_anchor_then_apply",
 
-  "prompt": "Let Σ = {a,b}. Which strings are in Σ*? Fill the slots.",
+  "prompt": "Let Sigma = {a,b}. Which strings are in Sigma*? Fill the slots.",
   "response_schema_ref": "commitment:theory.regex.kleene_star",
 
-  "answer_key": { "includes_empty_string": true, "definition_core": "all finite strings over Σ" },
+  "answer_key": { "includes_empty_string": true, "definition_core": "all finite strings over Sigma" },
 
   "deterministic_rubric": { /* as before */ },
 
@@ -230,10 +230,10 @@ You already have strong IR schemas. vNext extends them with:
 
 **Notes**
 
-* `signature` is used to reduce “latent clusters = style clusters” and for non‑invariance monitoring.
+* `signature` is used to reduce "latent clusters = style clusters" and for non-invariance monitoring.
 * Holdouts/adversarial/shadow/anchor items are **tagged at the item level** so the engine can enforce channel invariants.
 
-### 3.2 `ProbeFamilySpec` vNext (add invariance constraints + calibration strata)
+### 3.2 `ProbeFamilySpec` (add invariance constraints + calibration strata)
 
 ```jsonc
 {
@@ -273,7 +273,7 @@ You already have strong IR schemas. vNext extends them with:
 }
 ```
 
-### 3.3 `GradeResult` vNext (add channel, propensities, and formal residual inputs)
+### 3.3 `GradeResult` (add channel, propensities, and formal residual inputs)
 
 ```jsonc
 {
@@ -340,12 +340,12 @@ You already have strong IR schemas. vNext extends them with:
 **Why this matters**
 
 * `candidate_actions[]` with probabilities is the **support substrate** that makes offline evaluation real.
-* `p_assigned` logs micro‑randomization of feedback moves (treatment effect estimation).
+* `p_assigned` logs micro-randomization of feedback moves (treatment effect estimation).
 * `grading_signals` provides mechanical inputs for residual computation.
 
 ### 3.4 Sentinel fixtures (new): `SentinelFixtureSpec`
 
-Sentinels must be **fixed inputs**, not learner items. They run in CI and periodically at runtime as a self‑test.
+Sentinels must be **fixed inputs**, not learner items. They run in CI and periodically at runtime as a self-test.
 
 ```jsonc
 {
@@ -353,14 +353,14 @@ Sentinels must be **fixed inputs**, not learner items. They run in CI and period
   "fixture_id": "sentinel_det_vs_llm_disagree_01",
 
   "item_like": {
-    "prompt": "Define Σ* for alphabet Σ.",
+    "prompt": "Define Sigma* for alphabet Sigma.",
     "response_schema_ref": "commitment:theory.regex.kleene_star"
   },
 
   "canonical_responses": [
     {
       "response_id": "correct_short",
-      "response_payload": { "definition_core": "set of all finite strings over Σ", "includes_empty_string": true },
+      "response_payload": { "definition_core": "set of all finite strings over Sigma", "includes_empty_string": true },
       "expected_slot_scores": { "definition_core": "pass", "includes_empty_string": "pass" }
     },
     {
@@ -381,7 +381,7 @@ Sentinels must be **fixed inputs**, not learner items. They run in CI and period
 }
 ```
 
-### 3.5 Holdout bank vNext: forms + consumables + contamination index
+### 3.5 Holdout bank: forms + consumables + contamination index
 
 ```jsonc
 {
@@ -407,11 +407,11 @@ Runtime tracks:
 * `contamination_index` (per domain + per commitment + global)
 * `retired_items[]`
 
-### 3.6 Sensor models vNext: factor‑first likelihoods with item offsets
+### 3.6 Sensor models: factor-first likelihoods with item offsets
 
-You can still ship a leaf table MVP, but vNext makes the **factor‑first path** a first‑class contract.
+You can still ship a leaf table MVP, but this blueprint makes the **factor-first path** a first-class contract.
 
-**Transitional sensor model spec**: low‑rank factor model + optional leaf view.
+**Transitional sensor model spec**: low-rank factor model + optional leaf view.
 
 ```jsonc
 {
@@ -458,7 +458,7 @@ You can still ship a leaf table MVP, but vNext makes the **factor‑first path**
 
 **Key rule**: leaf modes are **compiled views**; factor model is the inference substrate.
 
-### 3.7 State vNext: add calibration health + item/family health + edge audits + anchor reconciliation
+### 3.7 State: add calibration health + item/family health + edge audits + anchor reconciliation
 
 Extend your `CommitmentState` with:
 
@@ -504,7 +504,7 @@ Example (only new fields shown):
 
 ---
 
-## 4) Measurement & inference vNext: predictive calibration + non‑invariance + experimental structure
+## 4) Measurement & inference: predictive calibration + non-invariance + experimental structure
 
 ### 4.1 Core inference invariant: maintain and test posterior predictive distributions
 
@@ -534,11 +534,11 @@ Track:
   2. reduce diagnosis update weights,
   3. increase anchor/shadow sampling,
   4. prefer structured formats,
-  5. quarantine suspect families/items if non‑invariance signals are high.
+  5. quarantine suspect families/items if non-invariance signals are high.
 
-This ensures you detect “internally coherent but wrong” belief states early.
+This ensures you detect "internally coherent but wrong" belief states early.
 
-### 4.2 Probe family non‑invariance: item offsets + “item weirdness” EM updates
+### 4.2 Probe family non-invariance: item offsets + "item weirdness" EM updates
 
 Add a lightweight item parameter layer:
 
@@ -548,27 +548,27 @@ Each item maintains an online estimate:
 * `weirdness_score` (how surprising the outcome is conditioned on current state predictions)
 * `spec_defect_score` (if failures contradict nearby anchors/holdouts)
 
-**Operational update (fast, non‑IRT)**
+**Operational update (fast, non-IRT)**
 
 * Given current state, compute predicted pass probability for the item.
-* If item fails much more often than predicted across strong states → raise `difficulty_offset` and `weirdness`.
-* If item behaves inconsistently across contexts beyond signature bounds → raise `family_non_invariance`.
+* If item fails much more often than predicted across strong states -> raise `difficulty_offset` and `weirdness`.
+* If item behaves inconsistently across contexts beyond signature bounds -> raise `family_non_invariance`.
 
 Your sensor becomes:
 
 * `P(obs | factors, family, item_offset, session)`
 
-This prevents “this item is weird” from being attributed as “learner has a weird misconception.”
+This prevents "this item is weird" from being attributed as "learner has a weird misconception."
 
-### 4.3 Measurement ≈ intervention: add shadow probes, pre/post, and micro‑randomization
+### 4.3 Measurement ~ intervention: add shadow probes, pre/post, and micro-randomization
 
-Your `w_evidence`/`w_learning` split is necessary; vNext adds experimental structure so you can disentangle learning transitions vs measurement changes.
+Your `w_evidence`/`w_learning` split is necessary; this blueprint adds experimental structure so you can disentangle learning transitions vs measurement changes.
 
 **Additions**
 
 1. **Shadow probes (Channel D)**
 
-   * 10–20s, no feedback, rotated format.
+   * 10-20s, no feedback, rotated format.
    * Used for diagnosis + calibration with minimal contamination.
 
 2. **Pre/post pairs**
@@ -577,16 +577,16 @@ Your `w_evidence`/`w_learning` split is necessary; vNext adds experimental struc
 
      * different family if possible,
      * ideally different format (slots vs recall).
-   * Explicitly model expected delta from “dose” and verify it.
+   * Explicitly model expected delta from "dose" and verify it.
 
-3. **Micro‑randomization in feedback moves**
+3. **Micro-randomization in feedback moves**
 
    * For a subset of cases, randomize between two plausible moves (e.g., `HINT_NARROW` vs `CONTRAST`), log probabilities.
-   * This supports estimating treatment effects of primitives and guards against “belief drift that looks like learning.”
+   * This supports estimating treatment effects of primitives and guards against "belief drift that looks like learning."
 
-### 4.4 Formal residual definitions (mechanical, content‑agnostic)
+### 4.4 Formal residual definitions (mechanical, content-agnostic)
 
-This is a **must‑have** hardening; residuals cannot be vibes.
+This is a **must-have** hardening; residuals cannot be vibes.
 
 Define them mechanically:
 
@@ -603,7 +603,7 @@ Define them mechanically:
 * Computed from grader instability signals:
 
   * deterministic vs LLM disagreement,
-  * multi‑pass LLM disagreement,
+  * multi-pass LLM disagreement,
   * schema invalidation,
   * injection detector triggers,
   * parsing confidence low.
@@ -613,18 +613,18 @@ Define them mechanically:
 * Computed from spec ambiguity:
 
   * `rubric_path_count > 1`,
-  * equivalence class size large for free‑text mapping,
+  * equivalence class size large for free-text mapping,
   * multiple reference answers yield conflicting slot assignments at high similarity.
 
-**Routing invariants (hard‑coded)**
+**Routing invariants (hard-coded)**
 
-* High `R_spec_underdetermined` ⇒ do not penalize learner; quarantine item family; open content bug.
-* High `R_sensor_unreliable` ⇒ safe mode: structured formats, reduce inference weight, require anchor/shadow confirmation for updates.
-* High `R_model_mismatch` ⇒ anomaly pipeline (taxonomy discovery), not silent absorption.
+* High `R_spec_underdetermined` => do not penalize learner; quarantine item family; open content bug.
+* High `R_sensor_unreliable` => safe mode: structured formats, reduce inference weight, require anchor/shadow confirmation for updates.
+* High `R_model_mismatch` => anomaly pipeline (taxonomy discovery), not silent absorption.
 
 ---
 
-## 5) Routing & control vNext: exploration substrate + stability + anchor constraints
+## 5) Routing & control: exploration substrate + stability + anchor constraints
 
 ### 5.1 Exploration support (mandatory entropy floor)
 
@@ -635,7 +635,7 @@ To make offline policy evaluation real, the action selection must have **support
 * sample stochastically with:
 
   * minimum entropy constraint,
-  * minimum probability mass on alternatives (e.g., ε‑greedy or softmax with temperature floor),
+  * minimum probability mass on alternatives (e.g., epsilon-greedy or softmax with temperature floor),
   * especially within measurement selection.
 
 Log:
@@ -646,21 +646,21 @@ This simultaneously improves:
 
 * offline evaluation,
 * drift detection,
-* robustness against self‑confirming loops.
+* robustness against self-confirming loops.
 
 ### 5.2 Controller stability remains (hysteresis + plan blocks + switching cost)
 
-Keep your three stabilizers; vNext adds one more:
+Keep your three stabilizers; this blueprint adds one more:
 
-4. **Calibration‑aware damping**
+4. **Calibration-aware damping**
 
 * If predictive checks are failing, **increase inertia** (avoid thrash caused by miscalibration) and sample anchors/shadows instead.
 
-### 5.3 DAG backchaining vNext: edge audits + counterfactual tests + edge uncertainty gates
+### 5.3 DAG backchaining: edge audits + counterfactual tests + edge uncertainty gates
 
-Confirmatory prereq probes are good; vNext makes edges auditable.
+Confirmatory prereq probes are good; this blueprint makes edges auditable.
 
-**Add per‑edge state**
+**Add per-edge state**
 
 * `p_edge_blocking` remains, but is updated using:
 
@@ -673,7 +673,7 @@ Confirmatory prereq probes are good; vNext makes edges auditable.
 
   * attempt a downstream remediation anyway,
   * observe if downstream improves.
-* If downstream improves despite prereq “failure,” reduce edge blocking strength.
+* If downstream improves despite prereq "failure," reduce edge blocking strength.
 
 **Edge uncertainty gate**
 
@@ -686,7 +686,7 @@ This prevents the DAG from becoming a causal hallucination machine.
 
 ---
 
-## 6) Anti‑Goodhart vNext: adversarial probes must stay unlearned, and not become an objective
+## 6) Anti-Goodhart: adversarial probes must stay unlearned, and not become an objective
 
 ### 6.1 Procedural adversarial generation + rotation
 
@@ -694,9 +694,9 @@ Adversarial probes are:
 
 * defined by structural invariants (minimal pair axis, perturbation axis),
 * procedurally generated with varied surface forms,
-* rotated, with per‑item exposure limits.
+* rotated, with per-item exposure limits.
 
-### 6.2 Feedback‑minimal by default for adversarial and holdout channels
+### 6.2 Feedback-minimal by default for adversarial and holdout channels
 
 To keep them measuring rather than training:
 
@@ -705,21 +705,21 @@ To keep them measuring rather than training:
 
 ### 6.3 Shortcut resistance is a guardrail, not a reward
 
-Maintain a “shortcut resistance” measure but use it as:
+Maintain a "shortcut resistance" measure but use it as:
 
-* a constraint (“must be above threshold for certification”),
-* not an optimization target, to avoid second‑order Goodhart.
+* a constraint ("must be above threshold for certification"),
+* not an optimization target, to avoid second-order Goodhart.
 
 ---
 
-## 7) Drift & integrity vNext: fixture sentinels, not learner items
+## 7) Drift & integrity: fixture sentinels, not learner items
 
-### 7.1 Sentinel fixtures (CI + periodic self‑test)
+### 7.1 Sentinel fixtures (CI + periodic self-test)
 
 Sentinels are **fixed prompts + fixed canonical responses**, spanning:
 
 * correct/partial/incorrect,
-* spec‑underdetermined cases,
+* spec-underdetermined cases,
 * injection attempts,
 * formatting edge cases,
 * known tricky paraphrases.
@@ -727,17 +727,17 @@ Sentinels are **fixed prompts + fixed canonical responses**, spanning:
 They run:
 
 * in CI for grading code/prompt changes,
-* in production periodically as a background self‑test (no learner involved).
+* in production periodically as a background self-test (no learner involved).
 
 If drift:
 
 * engine enters safe mode (structured formats; reduced inference weight; more anchors).
 
-### 7.2 Cross‑grader anchors
+### 7.2 Cross-grader anchors
 
 For Channel A:
 
-* use a different grader class (deterministic oracle where possible; otherwise a second model family / prompt) so the system can’t “self‑confirm” with the same grader.
+* use a different grader class (deterministic oracle where possible; otherwise a second model family / prompt) so the system can't "self-confirm" with the same grader.
 
 ---
 
@@ -752,18 +752,18 @@ Add explicit runtime contract:
 
 **Invariant**
 
-* Diagnosis updates (factors) require closed‑book evidence channels.
-* Open‑book/tool‑assisted updates learning/retention but not diagnosis.
+* Diagnosis updates (factors) require closed-book evidence channels.
+* Open-book/tool-assisted updates learning/retention but not diagnosis.
 
-Optionally track “suspicion signals” (latency anomalies, copy/paste patterns) but treat them as:
+Optionally track "suspicion signals" (latency anomalies, copy/paste patterns) but treat them as:
 
 * *inputs to `R_sensor_unreliable`*, not proof.
 
 ---
 
-## 9) Depth audits vNext: structured, deterministic‑first, LLM coarse + abstaining
+## 9) Depth audits: structured, deterministic-first, LLM coarse + abstaining
 
-Depth audits are valuable, but high risk. vNext hardens them:
+Depth audits are valuable, but high risk. This blueprint hardens them:
 
 ### 9.1 Structured depth audit schema
 
@@ -796,9 +796,9 @@ If depth score rises but holdout/anchor transfer does not:
 
 ---
 
-## 10) Holdout exams vNext: contamination protocol and consumables
+## 10) Holdout exams: contamination protocol and consumables
 
-Holdouts are not “never used for teaching” once shown. vNext treats holdouts as consumables:
+Holdouts are not "never used for teaching" once shown. This blueprint treats holdouts as consumables:
 
 Options (configurable per domain):
 
@@ -811,13 +811,13 @@ Track:
 * `holdout_contamination_index` per commitment/domain
 * `holdout_exposure_count`
 * `retired_items[]`
-* link holdout trends to contamination index so you don’t fool yourself with “improvements.”
+* link holdout trends to contamination index so you don't fool yourself with "improvements."
 
 ---
 
-## 11) Latent context clusters vNext: cluster on task structure, not style; use as alerts
+## 11) Latent context clusters: cluster on task structure, not style; use as alerts
 
-Two‑layer context remains (authored tags + latent clusters), but clusters should include structural features:
+Two-layer context remains (authored tags + latent clusters), but clusters should include structural features:
 
 * response schema topology,
 * required operations (apply/contrast/generate/counterexample),
@@ -828,18 +828,18 @@ Two‑layer context remains (authored tags + latent clusters), but clusters shou
 
 Run **cluster stability checks**:
 
-* paraphrase prompts and ensure cluster assignments don’t radically change.
+* paraphrase prompts and ensure cluster assignments don't radically change.
 * If unstable, treat as style clusters; keep as weak alerts only.
 
 Use clusters as:
 
-* “something changed—investigate,” not “new context discovered.”
+* "something changed-investigate," not "new context discovered."
 
 ---
 
-## 12) Spec corruption defenses vNext: truth drift is worse than grader drift
+## 12) Spec corruption defenses: truth drift is worse than grader drift
 
-Add pipeline defenses (compiler‑time + online):
+Add pipeline defenses (compiler-time + online):
 
 ### 12.1 Independent generation + disagreement resolution
 
@@ -848,7 +848,7 @@ For answer keys/rubrics/discriminators:
 * generate via two independent LLM runs (or LLM + symbolic checker),
 * compare; if disagreement, route to human or deterministic verifier.
 
-### 12.2 Property‑based tests
+### 12.2 Property-based tests
 
 Where executable semantics exist:
 
@@ -867,34 +867,34 @@ If:
 
 ---
 
-## 13) Taxonomy evolution vNext: promote only if it improves predictions and transfer
+## 13) Taxonomy evolution: promote only if it improves predictions and transfer
 
-You already have anomaly lifecycle; vNext adds promotion gates:
+You already have anomaly lifecycle; this blueprint adds promotion gates:
 
 A new factor/mode must:
 
 * improve posterior predictive calibration (scoring rules) on frozen logs,
 * or improve transfer on holdouts/anchors,
 * replicate across probe families,
-* and not increase non‑invariance alarms.
+* and not increase non-invariance alarms.
 
-This prevents “adding clever labels” from replacing “adding explanatory power.”
+This prevents "adding clever labels" from replacing "adding explanatory power."
 
 ---
 
-## 14) Simulator harness vNext: adversarial mis‑spec + fuzzing; regression, not proof
+## 14) Simulator harness: adversarial mis-spec + fuzzing; regression, not proof
 
-Keep the sim harness; upgrade it so you can’t win your own game:
+Keep the sim harness; upgrade it so you can't win your own game:
 
-### 14.1 Mis‑specified archetypes
+### 14.1 Mis-specified archetypes
 
 Include learners that violate engine assumptions:
 
 * correlated factors (break independence),
 * sudden insight transitions,
-* heterogeneous probe family behavior (non‑invariance),
+* heterogeneous probe family behavior (non-invariance),
 * new misconception not in taxonomy,
-* tool‑assisted gamer behavior.
+* tool-assisted gamer behavior.
 
 ### 14.2 Simulator fuzzing layer
 
@@ -908,7 +908,7 @@ Per run, randomly perturb:
 
 Evaluate:
 
-* worst‑case and distributional performance, not mean.
+* worst-case and distributional performance, not mean.
 
 ### 14.3 Harness goal
 
@@ -919,16 +919,16 @@ Treat sim as:
 
 ---
 
-## 15) Anchor channels: auditable ground truth anchors that the controller can’t game
+## 15) Anchor channels: auditable ground truth anchors that the controller can't game
 
 Define an **anchor channel** with privileged status (Channel A):
 
 * fixed format,
-* closed‑book,
-* cross‑grader,
-* quota‑enforced.
+* closed-book,
+* cross-grader,
+* quota-enforced.
 
-Add “belief audits”:
+Add "belief audits":
 
 * periodically reconcile belief state against anchor outcomes:
 
@@ -938,9 +938,9 @@ This makes it much harder for the controller to optimize for clean signals or be
 
 ---
 
-# Repo‑level project plan vNext (module additions, still content‑agnostic engine)
+# Repo-level project plan (module additions, still content-agnostic engine)
 
-Your layout remains strong; vNext adds a few modules:
+Your layout remains strong; this blueprint adds a few modules:
 
 ```
 repo/
@@ -986,9 +986,9 @@ repo/
 
 ---
 
-# Minimal build‑first milestone vNext (smallest loop that includes the new hardenings)
+# Minimal build-first milestone (smallest loop that includes the new hardenings)
 
-Keep your original milestone, but add the vNext “highest leverage” hardening set *as non‑optional*:
+Keep your original milestone, but add the "highest leverage" hardening set *as non-optional*:
 
 ### Content slice
 
@@ -1000,14 +1000,14 @@ Keep your original milestone, but add the vNext “highest leverage” hardening
   * 1 adversarial generator (procedural)
   * 1 shadow probe family
   * 1 structured depth audit
-* domain‑level:
+* domain-level:
 
   * holdout forms with retire/rotate policy
-  * sentinel fixtures (fixed responses) and anchor probes (cross‑grader)
+  * sentinel fixtures (fixed responses) and anchor probes (cross-grader)
 
 ### Engine slice
 
-* factor‑first sensor model + item offsets
+* factor-first sensor model + item offsets
 * posterior predictive checks with scoring rules
 * exploration substrate with logged action distributions
 * mechanical residual computation + invariant routing rules
@@ -1018,39 +1018,39 @@ Keep your original milestone, but add the vNext “highest leverage” hardening
 
 ### Sim slice
 
-* archetypes: absent, misconception, mixed, gamer, high slip, tool‑assisted
-* mis‑spec: non‑invariance and sudden insight
-* fuzz 20–30% of runs with perturbed drift/difficulty/slip
+* archetypes: absent, misconception, mixed, gamer, high slip, tool-assisted
+* mis-spec: non-invariance and sudden insight
+* fuzz 20-30% of runs with perturbed drift/difficulty/slip
 * metrics: diagnosis accuracy, calibration scores, thrash rate, false reroute rate, Goodhart resistance, anchor discrepancy
 
-If this passes, you’re genuinely in “scale content + iterate models” territory with a system that **cannot remain confidently wrong for long**.
+If this passes, you're genuinely in "scale content + iterate models" territory with a system that **cannot remain confidently wrong for long**.
 
 ---
 
-## Optional: quick crosswalk (red‑team points → vNext features)
+## Optional: quick crosswalk (red-team points -> blueprint features)
 
-* Predictive calibration target → **posterior predictive checks + scoring rules**
-* Non‑invariance → **item offsets + family invariance contract + weirdness**
-* Contamination → **shadow probes + pre/post + channel gating**
-* Off‑policy evaluation support → **exploration sampler + action distributions**
-* Residual formalization → **mechanical definitions + invariants**
-* Taxonomy bloat via leaf modes → **factor‑first sensor path + leaf compiled view**
-* DAG hallucinations → **edge audits + counterfactual backchaining tests**
-* Adversarial learnability → **procedural rotation + feedback‑minimal**
-* Sentinel confusion → **fixture sentinels (CI/self-test), not learner items**
-* Holdout contamination → **consumables/forms + delayed feedback + index**
-* Embedding mirage → **structural clustering features + stability checks**
-* Depth audit risk → **structured slots + deterministic checks + LLM abstention**
-* External tool use → **assistance modes contract + evidence gating**
-* Spec corruption → **multi-source generation + property tests + anomaly detectors**
-* Sim overfit → **mis‑spec archetypes + fuzzing + worst‑case evaluation**
-* Controller Goodhart on beliefs → **anchor channels + belief audits + quotas**
+* Predictive calibration target -> **posterior predictive checks + scoring rules**
+* Non-invariance -> **item offsets + family invariance contract + weirdness**
+* Contamination -> **shadow probes + pre/post + channel gating**
+* Off-policy evaluation support -> **exploration sampler + action distributions**
+* Residual formalization -> **mechanical definitions + invariants**
+* Taxonomy bloat via leaf modes -> **factor-first sensor path + leaf compiled view**
+* DAG hallucinations -> **edge audits + counterfactual backchaining tests**
+* Adversarial learnability -> **procedural rotation + feedback-minimal**
+* Sentinel confusion -> **fixture sentinels (CI/self-test), not learner items**
+* Holdout contamination -> **consumables/forms + delayed feedback + index**
+* Embedding mirage -> **structural clustering features + stability checks**
+* Depth audit risk -> **structured slots + deterministic checks + LLM abstention**
+* External tool use -> **assistance modes contract + evidence gating**
+* Spec corruption -> **multi-source generation + property tests + anomaly detectors**
+* Sim overfit -> **mis-spec archetypes + fuzzing + worst-case evaluation**
+* Controller Goodhart on beliefs -> **anchor channels + belief audits + quotas**
 
 ---
 
-If you want the “next artifact to hand to agents” (no back‑and‑forth), the fastest way to force the whole system to become real is to lock down **two schema packages** first:
+If you want the "next artifact to hand to agents" (no back-and-forth), the fastest way to force the whole system to become real is to lock down **two schema packages** first:
 
-1. **Runtime logging & invariants**: `GradeResult vNext`, `decision_traces`, `feedback_trace`, residual computation inputs, assistance mode, evidence channel.
-2. **Calibration & non‑invariance**: `ProbeFamilySensorModel vNext`, `ItemSpec.item_params.signature`, item offsets, calibration strata + scoring rules, fixture sentinel spec.
+1. **Runtime logging & invariants**: `GradeResult`, `decision_traces`, `feedback_trace`, residual computation inputs, assistance mode, evidence channel.
+2. **Calibration & non-invariance**: `ProbeFamilySensorModel`, `ItemSpec.item_params.signature`, item offsets, calibration strata + scoring rules, fixture sentinel spec.
 
 Those two packages force everything else (router, portfolio, sim harness, CI) to snap into place.

@@ -1509,12 +1509,13 @@ class TestV01Acceptance(unittest.TestCase):
             [],
             telemetry_events=telemetry_events,
             migrations=[],
-            include_future_gates=True,
         )
-        self.assertFalse(_gate(results, "G-RUN-VNEXT-LINEAGE").passed)
         self.assertFalse(_gate(results, "G-MRG-V01-LEDGER").passed)
+        self.assertFalse(_gate(results, "G-RUN-V01-REPLAYSTATE").passed)
+        gate_ids = {r.gate_id for r in results}
+        self.assertTrue(all(not gate_id.startswith("G-RUN-V11-") for gate_id in gate_ids))
 
-    def test_at_v01_36b_vnext_gates_not_emitted_by_default(self) -> None:
+    def test_at_v01_36b_v11_gates_not_emitted(self) -> None:
         bootstrap = {
             "source_run_id": "run_prev_001",
             "source_snapshot_id": "snap_prev_001",
@@ -1522,14 +1523,14 @@ class TestV01Acceptance(unittest.TestCase):
             "source_replay_fingerprint": "sha256:replay_prev",
         }
         manifest = make_manifest(
-            run_id="run_epoch_002_default_vnext",
+            run_id="run_epoch_002_default_v11",
             timeline_id="timeline_learner_001",
             epoch_index=2,
             predecessor_run_id="run_prev_001",
             bootstrap_snapshot_ref=bootstrap,
             migration_event_id="mig_0001",
         )
-        attempt = make_attempt(manifest, attempt_id="att_epoch_002_default_vnext_001")
+        attempt = make_attempt(manifest, attempt_id="att_epoch_002_default_v11_001")
         precommit = make_attempt_precommit(manifest, attempt)
         telemetry_events = make_attempt_telemetry_events(manifest, attempt)
 
@@ -1543,8 +1544,10 @@ class TestV01Acceptance(unittest.TestCase):
             migrations=[],
         )
         gate_ids = {r.gate_id for r in results}
-        self.assertNotIn("G-RUN-VNEXT-LINEAGE", gate_ids)
-        self.assertNotIn("G-RUN-VNEXT-MIGSEQ", gate_ids)
+        self.assertTrue(all(not gate_id.startswith("G-RUN-V11-") for gate_id in gate_ids))
+        # v0.1 integrity spine still enforces migration/lineage semantics.
+        self.assertFalse(_gate(results, "G-MRG-V01-LEDGER").passed)
+        self.assertFalse(_gate(results, "G-RUN-V01-REPLAYSTATE").passed)
 
     def test_at_v01_37_migration_must_precede_precommits_in_epoch_runs(self) -> None:
         bootstrap = {
@@ -1585,9 +1588,7 @@ class TestV01Acceptance(unittest.TestCase):
                 events=store.get_events(manifest["run_id"]),
                 telemetry_events=telemetry_events,
                 migrations=[migration],
-                include_future_gates=True,
             )
-            self.assertFalse(_gate(results, "G-RUN-VNEXT-MIGSEQ").passed)
             self.assertFalse(_gate(results, "G-RUN-V01-REPLAYSTATE").passed)
 
     def test_at_v01_38_timeline_replay_across_epochs(self) -> None:
@@ -1643,6 +1644,56 @@ class TestV01Acceptance(unittest.TestCase):
             )
             self.assertEqual(timeline_result.errors, [])
             self.assertEqual(len(timeline_result.run_results), 2)
+
+    def test_at_v01_38b_timeline_replay_invalid_epoch_index_reported(self) -> None:
+        timeline_id = "timeline_learner_001"
+        manifest_bad = make_manifest(run_id="run_tl_bad_epoch", timeline_id=timeline_id)
+        manifest_bad["epoch_index"] = "bad_epoch_index"
+
+        with tempfile.TemporaryDirectory() as tmp:
+            store = LedgerStore(tmp)
+            store.put_manifest(manifest_bad)
+            timeline_result = self.replay.replay_timeline(
+                timeline_id,
+                [manifest_bad["run_id"]],
+                store,
+            )
+            self.assertTrue(
+                any(
+                    f"timeline:{timeline_id}:epoch_index_invalid:{manifest_bad['run_id']}" in err
+                    for err in timeline_result.errors
+                )
+            )
+
+    def test_at_v01_38c_timeline_replay_invalid_manifest_run_id_reported(self) -> None:
+        timeline_id = "timeline_learner_001"
+        manifest = make_manifest(run_id="run_tl_missing_id", timeline_id=timeline_id)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            store = LedgerStore(tmp)
+            store.put_manifest(manifest)
+            # Simulate corrupted manifest readback where run_id is missing.
+            store.manifests[manifest["run_id"]] = clone(store.manifests[manifest["run_id"]])
+            store.manifests[manifest["run_id"]].pop("run_id", None)
+
+            timeline_result = self.replay.replay_timeline(
+                timeline_id,
+                [manifest["run_id"]],
+                store,
+            )
+            self.assertTrue(
+                any(
+                    f"timeline:{timeline_id}:run_id_invalid:{manifest['run_id']}" in err
+                    for err in timeline_result.errors
+                )
+            )
+            self.assertTrue(
+                any(
+                    "manifest:run_id_invalid_timeline_replay" in err
+                    for rr in timeline_result.run_results
+                    for err in rr.errors
+                )
+            )
 
     def test_at_v01_20_event_order_uses_ledger_sequence(self) -> None:
         manifest = make_manifest(run_id="run_event_order")
@@ -1911,6 +1962,15 @@ class TestV01Acceptance(unittest.TestCase):
             "attempt_precommit_decision_trace_policy_domain_mismatch:pol_0001",
             precommit_errors,
         )
+        gate_results = self._run_gates(
+            manifest,
+            [attempt],
+            [precommit],
+            [],
+            [],
+            telemetry_events=make_attempt_telemetry_events(manifest, attempt),
+        )
+        self.assertFalse(_gate(gate_results, "G-MRG-V01-POLICYDEC").passed)
 
     def test_at_v01_23c_candidate_action_id_uniqueness_enforced(self) -> None:
         manifest = make_manifest(run_id="run_candidate_action_duplicates")
@@ -2215,6 +2275,25 @@ class TestV01Acceptance(unittest.TestCase):
                 events=None,
             )
 
+    def test_at_v01_33b_malformed_manifest_does_not_crash_gate_runner(self) -> None:
+        malformed_manifest = {
+            "schema_version": "0.1.0",
+            "timeline_id": "timeline_learner_001",
+            "epoch_index": 1,
+        }
+        results = self.gates.run_v01_gates(
+            malformed_manifest,
+            [],
+            [],
+            [],
+            [],
+            events=[],
+            telemetry_events=[],
+        )
+        self.assertFalse(_gate(results, "G-RUN-V01-EVORD").passed)
+        self.assertFalse(_gate(results, "G-RUN-V01-REPLAYSTATE").passed)
+        self.assertFalse(_gate(results, "G-MRG-V01-LEDGER").passed)
+
     def test_at_v01_39_schema_version_dispatch_and_forward_additive_fields(self) -> None:
         manifest = make_manifest()
         self.assertEqual(self.validator.validate_manifest(manifest), [])
@@ -2296,6 +2375,30 @@ class TestV01Acceptance(unittest.TestCase):
         self.assertIn(
             "manifest_ope_claim_contract_min_candidate_probability_not_numeric",
             contract_errors,
+        )
+
+        bad_entropy_manifest_inf = make_manifest(run_id="run_bad_ope_entropy_inf")
+        bad_entropy_manifest_inf["ope_claim_contract"]["min_entropy_bits"] = float("inf")
+        entropy_inf_errors = self.validator.validate_manifest(bad_entropy_manifest_inf)
+        self.assertIn(
+            "manifest_ope_claim_contract_min_entropy_bits_not_numeric",
+            entropy_inf_errors,
+        )
+
+        bad_entropy_manifest_nan = make_manifest(run_id="run_bad_ope_entropy_nan")
+        bad_entropy_manifest_nan["ope_claim_contract"]["min_entropy_bits"] = float("nan")
+        entropy_nan_errors = self.validator.validate_manifest(bad_entropy_manifest_nan)
+        self.assertIn(
+            "manifest_ope_claim_contract_min_entropy_bits_not_numeric",
+            entropy_nan_errors,
+        )
+
+        bad_entropy_manifest_bigint = make_manifest(run_id="run_bad_ope_entropy_bigint")
+        bad_entropy_manifest_bigint["ope_claim_contract"]["min_entropy_bits"] = 10**10000
+        entropy_bigint_errors = self.validator.validate_manifest(bad_entropy_manifest_bigint)
+        self.assertIn(
+            "manifest_ope_claim_contract_min_entropy_bits_not_numeric",
+            entropy_bigint_errors,
         )
 
     def test_at_v01_45_numeric_typecheck_no_raw_isinstance_patterns(self) -> None:
