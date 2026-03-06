@@ -117,17 +117,17 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 #### V0.1 Attempt ledger + state persistence spine
 
-* [ ] Persist attempt records with: item identity, evidence channel, assistance mode, grading signals, residual inputs, chosen action probability.
-* [ ] Persist learner state snapshots with version pointers.
-* [ ] Ensure idempotent session replays (no duplicate attempts or double-updates).
+* [x] Persist attempt records with: item identity, evidence channel, assistance mode, grading signals, residual inputs, chosen action probability.
+* [x] Persist learner state snapshots with version pointers.
+* [x] Ensure idempotent session replays (no duplicate attempts or double-updates).
 * Acceptance: full replay from logs reproduces state transitions (within deterministic tolerances).
 * Complexity: **M**.
 
 #### V0.2 Content IR ingestion + minimal domain slice (hand-built if needed)
 
-* [ ] Stand up a tiny domain: ~6 commitments in a prereq DAG.
-* [ ] For each commitment: at least 1 measurement family + 1 teaching family (minimal).
-* [ ] Include placeholders for holdouts/anchors/adversarial/shadow even if not active yet.
+* [x] Stand up a tiny domain: ~6 commitments in a prereq DAG. *(implemented in `content_ir/releases/content.v2026.03.04.regex.v0.2.json`)*
+* [x] For each commitment: at least 1 measurement family + 1 teaching family (minimal). *(implemented in `content_ir/releases/content.v2026.03.04.regex.v0.2.json`)*
+* [x] Include placeholders for holdouts/anchors/adversarial/shadow even if not active yet. *(forms + tags + adversarial generator/family placeholders in v0.2 bundle)*
 * Acceptance: engine can load content IR and render items without engine code changes.
 * Complexity: **M**.
 

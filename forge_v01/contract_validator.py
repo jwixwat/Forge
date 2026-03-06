@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 from .obs_vocab_registry import ObservationVocabularyRegistry
 from . import audit_queries
@@ -68,6 +68,9 @@ from .utils import (
     sha256_json,
 )
 
+if TYPE_CHECKING:
+    from .content_ir_registry import ContentIRRegistry
+
 
 class ValidationError(ValueError):
     """Raised when a record violates contract constraints."""
@@ -76,14 +79,27 @@ class ValidationError(ValueError):
 class ContractValidator:
     """Validator for manifests, attempts, snapshots, and update events."""
 
-    def __init__(self, obs_vocab_registry: ObservationVocabularyRegistry | None = None) -> None:
+    def __init__(
+        self,
+        obs_vocab_registry: ObservationVocabularyRegistry | None = None,
+        content_ir_registry: "ContentIRRegistry | None" = None,
+    ) -> None:
         self._obs_vocab_registry = obs_vocab_registry or ObservationVocabularyRegistry()
+        self._content_ir_registry = content_ir_registry
 
     def replay_projection(self, manifest: dict[str, Any]) -> dict[str, Any]:
         projection: dict[str, Any] = {}
         for key in REPLAY_PROJECTION_KEYS:
             projection[key] = manifest.get(key)
         return projection
+
+    def deterministic_rubric_exists(self, item_id: str, content_ir_version: str) -> bool | None:
+        if self._content_ir_registry is None:
+            return None
+        try:
+            return self._content_ir_registry.deterministic_rubric_exists(content_ir_version, item_id)
+        except KeyError:
+            return None
 
     def precommit_projection_from_attempt(self, attempt: dict[str, Any]) -> dict[str, Any]:
         residual_inputs = attempt.get("residual_inputs", {})
