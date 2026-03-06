@@ -1,0 +1,4669 @@
+{
+  "schema_version": "0.2.0",
+  "release_id": "regex_v0_2_starter",
+  "content_ir_version": "content.v2026.03.04.regex.v0.2",
+  "release_hash": "sha256:8198266955e5844114f8aff1def001766d8cbe0e7159dd9e9f6203b4644b531a",
+  "change_manifest": {
+    "added": [
+      {
+        "entity_type": "commitment",
+        "entity_id": "cm_regex_literals",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "commitment",
+        "entity_id": "cm_regex_concat",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "commitment",
+        "entity_id": "cm_regex_alternation",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "commitment",
+        "entity_id": "cm_regex_kleene_star",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "commitment",
+        "entity_id": "cm_regex_kleene_plus",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "commitment",
+        "entity_id": "cm_regex_grouping_precedence",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "factor",
+        "entity_id": "F_local_concat_boundary",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "factor",
+        "entity_id": "F_local_alternation_scope",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "factor",
+        "entity_id": "F_local_star_semantics",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "factor",
+        "entity_id": "F_rel_star_vs_plus",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "factor",
+        "entity_id": "F_local_grouping_precedence",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "factor",
+        "entity_id": "F_strategy_pattern_match_shortcut",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_literals_measure",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_literals_teach",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_concat_measure",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_concat_teach",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_alternation_measure",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_alternation_teach",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_kleene_star_measure",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_kleene_star_teach",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_kleene_plus_measure",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_kleene_plus_teach",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_grouping_precedence_measure",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_grouping_precedence_teach",
+        "change_type": "add",
+        "metadata": {}
+      },
+      {
+        "entity_type": "probe_family",
+        "entity_id": "pf_regex_adversarial_placeholder",
+        "change_type": "add",
+        "metadata": {}
+      }
+    ],
+    "deprecated": [],
+    "modified": [],
+    "metadata": {
+      "source_added_count": 2
+    }
+  },
+  "commitments": [
+    {
+      "commitment_id": "cm_regex_literals",
+      "display_name": "Literals",
+      "description": "Learner can reason about literals.",
+      "lineage_id": "cm_regex_literals",
+      "status": "active",
+      "aliases": [],
+      "supersedes": [],
+      "superseded_by": [],
+      "metadata": {
+        "domain": "regex"
+      },
+      "tags": {
+        "domain": "regex"
+      },
+      "default_feedback_policy_ref": null
+    },
+    {
+      "commitment_id": "cm_regex_concat",
+      "display_name": "Concat",
+      "description": "Learner can reason about concat.",
+      "lineage_id": "cm_regex_concat",
+      "status": "active",
+      "aliases": [],
+      "supersedes": [],
+      "superseded_by": [],
+      "metadata": {
+        "domain": "regex"
+      },
+      "tags": {
+        "domain": "regex"
+      },
+      "default_feedback_policy_ref": null
+    },
+    {
+      "commitment_id": "cm_regex_alternation",
+      "display_name": "Alternation",
+      "description": "Learner can reason about alternation.",
+      "lineage_id": "cm_regex_alternation",
+      "status": "active",
+      "aliases": [],
+      "supersedes": [],
+      "superseded_by": [],
+      "metadata": {
+        "domain": "regex"
+      },
+      "tags": {
+        "domain": "regex"
+      },
+      "default_feedback_policy_ref": null
+    },
+    {
+      "commitment_id": "cm_regex_kleene_star",
+      "display_name": "Kleene Star",
+      "description": "Learner can reason about kleene star.",
+      "lineage_id": "cm_regex_kleene_star",
+      "status": "active",
+      "aliases": [],
+      "supersedes": [],
+      "superseded_by": [],
+      "metadata": {
+        "domain": "regex"
+      },
+      "tags": {
+        "domain": "regex"
+      },
+      "default_feedback_policy_ref": null
+    },
+    {
+      "commitment_id": "cm_regex_kleene_plus",
+      "display_name": "Kleene Plus",
+      "description": "Learner can reason about kleene plus.",
+      "lineage_id": "cm_regex_kleene_plus",
+      "status": "active",
+      "aliases": [],
+      "supersedes": [],
+      "superseded_by": [],
+      "metadata": {
+        "domain": "regex"
+      },
+      "tags": {
+        "domain": "regex"
+      },
+      "default_feedback_policy_ref": null
+    },
+    {
+      "commitment_id": "cm_regex_grouping_precedence",
+      "display_name": "Grouping Precedence",
+      "description": "Learner can reason about grouping precedence.",
+      "lineage_id": "cm_regex_grouping_precedence",
+      "status": "active",
+      "aliases": [],
+      "supersedes": [],
+      "superseded_by": [],
+      "metadata": {
+        "domain": "regex"
+      },
+      "tags": {
+        "domain": "regex"
+      },
+      "default_feedback_policy_ref": null
+    }
+  ],
+  "factors": [
+    {
+      "factor_id": "F_local_concat_boundary",
+      "factor_kind": "local_misconception",
+      "owner": "authoring",
+      "applies_to": {
+        "commitment_ids": [
+          "cm_regex_concat"
+        ]
+      },
+      "evidence_channels_allowed": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "status": "active",
+      "aliases": [],
+      "metadata": {},
+      "lineage_id": "F_local_concat_boundary",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "factor_id": "F_local_alternation_scope",
+      "factor_kind": "local_misconception",
+      "owner": "authoring",
+      "applies_to": {
+        "commitment_ids": [
+          "cm_regex_alternation"
+        ]
+      },
+      "evidence_channels_allowed": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "status": "active",
+      "aliases": [],
+      "metadata": {},
+      "lineage_id": "F_local_alternation_scope",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "factor_id": "F_local_star_semantics",
+      "factor_kind": "local_misconception",
+      "owner": "authoring",
+      "applies_to": {
+        "commitment_ids": [
+          "cm_regex_kleene_star"
+        ]
+      },
+      "evidence_channels_allowed": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "status": "active",
+      "aliases": [],
+      "metadata": {},
+      "lineage_id": "F_local_star_semantics",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "factor_id": "F_rel_star_vs_plus",
+      "factor_kind": "relational_confusion",
+      "owner": "authoring",
+      "applies_to": {
+        "commitment_ids": [
+          "cm_regex_kleene_star",
+          "cm_regex_kleene_plus"
+        ]
+      },
+      "evidence_channels_allowed": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "status": "active",
+      "aliases": [],
+      "metadata": {},
+      "lineage_id": "F_rel_star_vs_plus",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "factor_id": "F_local_grouping_precedence",
+      "factor_kind": "local_misconception",
+      "owner": "authoring",
+      "applies_to": {
+        "commitment_ids": [
+          "cm_regex_grouping_precedence"
+        ]
+      },
+      "evidence_channels_allowed": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "status": "active",
+      "aliases": [],
+      "metadata": {},
+      "lineage_id": "F_local_grouping_precedence",
+      "supersedes": [],
+      "superseded_by": []
+    },
+    {
+      "factor_id": "F_strategy_pattern_match_shortcut",
+      "factor_kind": "strategy_process",
+      "owner": "governance",
+      "applies_to": {
+        "domains": [
+          "regex"
+        ]
+      },
+      "evidence_channels_allowed": [
+        "A_anchor",
+        "B_measurement",
+        "C_learning",
+        "D_shadow"
+      ],
+      "status": "active",
+      "aliases": [],
+      "metadata": {},
+      "lineage_id": "F_strategy_pattern_match_shortcut",
+      "supersedes": [],
+      "superseded_by": []
+    }
+  ],
+  "edges": [
+    {
+      "edge_id": "e_literals_concat",
+      "src_commitment_id": "cm_regex_literals",
+      "dst_commitment_id": "cm_regex_concat",
+      "edge_kind": "hard_prereq",
+      "strength_prior": 0.95,
+      "rationale": "Literal recognition underpins concatenation.",
+      "notes": "Starter DAG edge",
+      "metadata": {}
+    },
+    {
+      "edge_id": "e_concat_alternation",
+      "src_commitment_id": "cm_regex_concat",
+      "dst_commitment_id": "cm_regex_alternation",
+      "edge_kind": "soft_prereq",
+      "strength_prior": 0.75,
+      "rationale": "Alternation builds on concatenation intuition.",
+      "notes": "Starter DAG edge",
+      "metadata": {}
+    },
+    {
+      "edge_id": "e_concat_star",
+      "src_commitment_id": "cm_regex_concat",
+      "dst_commitment_id": "cm_regex_kleene_star",
+      "edge_kind": "hard_prereq",
+      "strength_prior": 0.9,
+      "rationale": "Kleene star composes with concatenation.",
+      "notes": "Starter DAG edge",
+      "metadata": {}
+    },
+    {
+      "edge_id": "e_star_plus",
+      "src_commitment_id": "cm_regex_kleene_star",
+      "dst_commitment_id": "cm_regex_kleene_plus",
+      "edge_kind": "soft_prereq",
+      "strength_prior": 0.7,
+      "rationale": "Plus is often taught via star.",
+      "notes": "Starter DAG edge",
+      "metadata": {}
+    },
+    {
+      "edge_id": "e_alternation_grouping",
+      "src_commitment_id": "cm_regex_alternation",
+      "dst_commitment_id": "cm_regex_grouping_precedence",
+      "edge_kind": "hard_prereq",
+      "strength_prior": 0.88,
+      "rationale": "Grouping determines alternation precedence.",
+      "notes": "Starter DAG edge",
+      "metadata": {}
+    }
+  ],
+  "observation_schemas": [
+    {
+      "observation_schema_id": "obs_schema_slots_v1",
+      "schema_version": "0.2.0",
+      "features": [
+        {
+          "feature_id": "slot_pattern",
+          "value_type": "categorical",
+          "required": true,
+          "allowed_values": [
+            "all_correct",
+            "partial",
+            "all_incorrect"
+          ],
+          "metadata": {}
+        },
+        {
+          "feature_id": "latency_bucket",
+          "value_type": "categorical",
+          "required": true,
+          "allowed_values": [
+            "fast",
+            "medium",
+            "slow"
+          ],
+          "metadata": {}
+        },
+        {
+          "feature_id": "hint_used",
+          "value_type": "boolean",
+          "required": true,
+          "allowed_values": [
+            false,
+            true
+          ],
+          "metadata": {}
+        },
+        {
+          "feature_id": "slot_error_mask",
+          "value_type": "string",
+          "required": true,
+          "allowed_values": [],
+          "metadata": {}
+        }
+      ],
+      "outcome_surface_feature_ids": [
+        "slot_pattern"
+      ],
+      "auxiliary_feature_ids": [
+        "latency_bucket",
+        "hint_used",
+        "slot_error_mask"
+      ],
+      "metadata": {}
+    },
+    {
+      "observation_schema_id": "obs_schema_mcq_v1",
+      "schema_version": "0.2.0",
+      "features": [
+        {
+          "feature_id": "mcq_outcome",
+          "value_type": "categorical",
+          "required": true,
+          "allowed_values": [
+            "correct",
+            "incorrect"
+          ],
+          "metadata": {}
+        },
+        {
+          "feature_id": "latency_bucket",
+          "value_type": "categorical",
+          "required": true,
+          "allowed_values": [
+            "fast",
+            "medium",
+            "slow"
+          ],
+          "metadata": {}
+        },
+        {
+          "feature_id": "hint_used",
+          "value_type": "boolean",
+          "required": true,
+          "allowed_values": [
+            false,
+            true
+          ],
+          "metadata": {}
+        },
+        {
+          "feature_id": "selected_choice_id",
+          "value_type": "string",
+          "required": true,
+          "allowed_values": [],
+          "metadata": {}
+        }
+      ],
+      "outcome_surface_feature_ids": [
+        "mcq_outcome"
+      ],
+      "auxiliary_feature_ids": [
+        "latency_bucket",
+        "hint_used",
+        "selected_choice_id"
+      ],
+      "metadata": {}
+    }
+  ],
+  "response_schemas": [
+    {
+      "response_schema_id": "resp_slots_v1",
+      "response_kind": "slots",
+      "payload_schema": {
+        "slots": [
+          {
+            "name": "a",
+            "type": "string"
+          },
+          {
+            "name": "b",
+            "type": "string"
+          }
+        ]
+      },
+      "metadata": {},
+      "canonicalization_steps": [
+        {
+          "step_id": "trim",
+          "op": "trim",
+          "params": {},
+          "metadata": {}
+        }
+      ],
+      "parse_ir": {
+        "parse_ir_id": "parse_resp_slots_v1",
+        "parser_kind": "none",
+        "output_schema": {},
+        "uncertainty_fields": [],
+        "metadata": {}
+      },
+      "authoring_status": "active_supported"
+    },
+    {
+      "response_schema_id": "resp_mcq_v1",
+      "response_kind": "mcq",
+      "payload_schema": {
+        "choice": {
+          "type": "string"
+        }
+      },
+      "metadata": {},
+      "canonicalization_steps": [
+        {
+          "step_id": "trim",
+          "op": "trim",
+          "params": {},
+          "metadata": {}
+        },
+        {
+          "step_id": "lowercase",
+          "op": "lowercase",
+          "params": {},
+          "metadata": {}
+        }
+      ],
+      "parse_ir": {
+        "parse_ir_id": "parse_resp_mcq_v1",
+        "parser_kind": "none",
+        "output_schema": {},
+        "uncertainty_fields": [],
+        "metadata": {}
+      },
+      "authoring_status": "active_supported"
+    }
+  ],
+  "rubrics": [
+    {
+      "rubric_id": "rub_slots_regex_v1",
+      "deterministic": true,
+      "grader_kind": "deterministic",
+      "observation_schema_ref": "obs_schema_slots_v1",
+      "metadata": {},
+      "scoring_rules": [
+        {
+          "rule_id": "rule_rub_slots_regex_v1",
+          "rule_kind": "exact_match",
+          "source": "canonical_response",
+          "source_path": "canonical_response",
+          "params": {
+            "logic": "slot_exact_match",
+            "outcomes": [
+              "all_correct",
+              "partial",
+              "all_incorrect"
+            ]
+          },
+          "metadata": {}
+        }
+      ],
+      "observation_emission": {
+        "emission_id": "emit_rub_slots_regex_v1",
+        "fields": [
+          {
+            "feature_id": "slot_pattern",
+            "source": "grader_output",
+            "source_path": "grader_output.slot_pattern",
+            "metadata": {}
+          },
+          {
+            "feature_id": "latency_bucket",
+            "source": "grader_output",
+            "source_path": "grader_output.latency_bucket",
+            "metadata": {}
+          },
+          {
+            "feature_id": "hint_used",
+            "source": "grader_output",
+            "source_path": "grader_output.hint_used",
+            "metadata": {}
+          },
+          {
+            "feature_id": "slot_error_mask",
+            "source": "grader_output",
+            "source_path": "grader_output.slot_error_mask",
+            "metadata": {}
+          }
+        ],
+        "metadata": {}
+      },
+      "rubric_semantics_version": "sha256:9657d5d3a750d3d5da9ec38f6868cf582dc1f58649d54ab5a5540c595ae076cb"
+    },
+    {
+      "rubric_id": "rub_mcq_regex_v1",
+      "deterministic": true,
+      "grader_kind": "deterministic",
+      "observation_schema_ref": "obs_schema_mcq_v1",
+      "metadata": {},
+      "scoring_rules": [
+        {
+          "rule_id": "rule_rub_mcq_regex_v1",
+          "rule_kind": "exact_match",
+          "source": "canonical_response",
+          "source_path": "canonical_response",
+          "params": {
+            "logic": "choice_equals_answer_key",
+            "outcomes": [
+              "correct",
+              "incorrect"
+            ]
+          },
+          "metadata": {}
+        }
+      ],
+      "observation_emission": {
+        "emission_id": "emit_rub_mcq_regex_v1",
+        "fields": [
+          {
+            "feature_id": "mcq_outcome",
+            "source": "grader_output",
+            "source_path": "grader_output.mcq_outcome",
+            "metadata": {}
+          },
+          {
+            "feature_id": "latency_bucket",
+            "source": "grader_output",
+            "source_path": "grader_output.latency_bucket",
+            "metadata": {}
+          },
+          {
+            "feature_id": "hint_used",
+            "source": "grader_output",
+            "source_path": "grader_output.hint_used",
+            "metadata": {}
+          },
+          {
+            "feature_id": "selected_choice_id",
+            "source": "canonical_response",
+            "source_path": "canonical_response.choice",
+            "metadata": {}
+          }
+        ],
+        "metadata": {}
+      },
+      "rubric_semantics_version": "sha256:97b520eeabbe8d539d7b7f7b5f825b22fcbea331f40f7cbc400ce42895b7137b"
+    }
+  ],
+  "probe_families": [
+    {
+      "probe_family_id": "pf_regex_literals_measure",
+      "commitment_id": "cm_regex_literals",
+      "family_kind": "measurement",
+      "target_factors": [
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "A_anchor",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "B_measurement",
+          "feedback_mode": "minimal",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "D_shadow",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_literals_measure_001",
+          "it_regex_literals_measure_002"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "A_anchor",
+            "B_measurement",
+            "D_shadow"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_slot_pattern",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "slot_pattern"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "measurement"
+      },
+      "tags": {
+        "family_kind": "measurement"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_literals_measure_resp_slots_v1"
+      ],
+      "default_feedback_policy_ref": "fb_none_measurement",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_literals_teach",
+      "commitment_id": "cm_regex_literals",
+      "family_kind": "teaching",
+      "target_factors": [
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "C_learning"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "C_learning",
+          "feedback_mode": "full",
+          "hints_allowed": true,
+          "max_hints": 3,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_literals_teach_001"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "C_learning"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_slot_pattern",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "slot_pattern"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "teaching"
+      },
+      "tags": {
+        "family_kind": "teaching"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_literals_measure_resp_slots_v1"
+      ],
+      "default_feedback_policy_ref": "fb_tutorial_basic",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_concat_measure",
+      "commitment_id": "cm_regex_concat",
+      "family_kind": "measurement",
+      "target_factors": [
+        "F_local_concat_boundary",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "A_anchor",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "B_measurement",
+          "feedback_mode": "minimal",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "D_shadow",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_concat_measure_001",
+          "it_regex_concat_measure_002"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "A_anchor",
+            "B_measurement",
+            "D_shadow"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_mcq_outcome",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_concat_measure_resp_mcq_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "mcq_outcome"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "measurement"
+      },
+      "tags": {
+        "family_kind": "measurement"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_concat_measure_resp_mcq_v1"
+      ],
+      "default_feedback_policy_ref": "fb_none_measurement",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_concat_teach",
+      "commitment_id": "cm_regex_concat",
+      "family_kind": "teaching",
+      "target_factors": [
+        "F_local_concat_boundary",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "C_learning"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "C_learning",
+          "feedback_mode": "full",
+          "hints_allowed": true,
+          "max_hints": 3,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_concat_teach_001"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "C_learning"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_mcq_outcome",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_concat_measure_resp_mcq_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "mcq_outcome"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "teaching"
+      },
+      "tags": {
+        "family_kind": "teaching"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_concat_measure_resp_mcq_v1"
+      ],
+      "default_feedback_policy_ref": "fb_tutorial_basic",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_alternation_measure",
+      "commitment_id": "cm_regex_alternation",
+      "family_kind": "measurement",
+      "target_factors": [
+        "F_local_alternation_scope",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "A_anchor",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "B_measurement",
+          "feedback_mode": "minimal",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "D_shadow",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_alternation_measure_001",
+          "it_regex_alternation_measure_002"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "A_anchor",
+            "B_measurement",
+            "D_shadow"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_slot_pattern",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "slot_pattern"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "measurement"
+      },
+      "tags": {
+        "family_kind": "measurement"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_literals_measure_resp_slots_v1"
+      ],
+      "default_feedback_policy_ref": "fb_none_measurement",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_alternation_teach",
+      "commitment_id": "cm_regex_alternation",
+      "family_kind": "teaching",
+      "target_factors": [
+        "F_local_alternation_scope",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "C_learning"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "C_learning",
+          "feedback_mode": "full",
+          "hints_allowed": true,
+          "max_hints": 3,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_alternation_teach_001"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "C_learning"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_slot_pattern",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "slot_pattern"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "teaching"
+      },
+      "tags": {
+        "family_kind": "teaching"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_literals_measure_resp_slots_v1"
+      ],
+      "default_feedback_policy_ref": "fb_tutorial_basic",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_kleene_star_measure",
+      "commitment_id": "cm_regex_kleene_star",
+      "family_kind": "measurement",
+      "target_factors": [
+        "F_local_star_semantics",
+        "F_rel_star_vs_plus"
+      ],
+      "allowed_channels": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "A_anchor",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "B_measurement",
+          "feedback_mode": "minimal",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "D_shadow",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_kleene_star_measure_001",
+          "it_regex_kleene_star_measure_002"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "A_anchor",
+            "B_measurement",
+            "D_shadow"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_mcq_outcome",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_concat_measure_resp_mcq_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "mcq_outcome"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "measurement"
+      },
+      "tags": {
+        "family_kind": "measurement"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_concat_measure_resp_mcq_v1"
+      ],
+      "default_feedback_policy_ref": "fb_none_measurement",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_kleene_star_teach",
+      "commitment_id": "cm_regex_kleene_star",
+      "family_kind": "teaching",
+      "target_factors": [
+        "F_local_star_semantics",
+        "F_rel_star_vs_plus"
+      ],
+      "allowed_channels": [
+        "C_learning"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "C_learning",
+          "feedback_mode": "full",
+          "hints_allowed": true,
+          "max_hints": 3,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_kleene_star_teach_001"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "C_learning"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_mcq_outcome",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_concat_measure_resp_mcq_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "mcq_outcome"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "teaching"
+      },
+      "tags": {
+        "family_kind": "teaching"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_concat_measure_resp_mcq_v1"
+      ],
+      "default_feedback_policy_ref": "fb_tutorial_basic",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_kleene_plus_measure",
+      "commitment_id": "cm_regex_kleene_plus",
+      "family_kind": "measurement",
+      "target_factors": [
+        "F_rel_star_vs_plus",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "A_anchor",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "B_measurement",
+          "feedback_mode": "minimal",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "D_shadow",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_kleene_plus_measure_001",
+          "it_regex_kleene_plus_measure_002"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "A_anchor",
+            "B_measurement",
+            "D_shadow"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_slot_pattern",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "slot_pattern"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "measurement"
+      },
+      "tags": {
+        "family_kind": "measurement"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_literals_measure_resp_slots_v1"
+      ],
+      "default_feedback_policy_ref": "fb_none_measurement",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_kleene_plus_teach",
+      "commitment_id": "cm_regex_kleene_plus",
+      "family_kind": "teaching",
+      "target_factors": [
+        "F_rel_star_vs_plus",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "C_learning"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "C_learning",
+          "feedback_mode": "full",
+          "hints_allowed": true,
+          "max_hints": 3,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_kleene_plus_teach_001"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "C_learning"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_slot_pattern",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "slot_pattern"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "teaching"
+      },
+      "tags": {
+        "family_kind": "teaching"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_literals_measure_resp_slots_v1"
+      ],
+      "default_feedback_policy_ref": "fb_tutorial_basic",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_grouping_precedence_measure",
+      "commitment_id": "cm_regex_grouping_precedence",
+      "family_kind": "measurement",
+      "target_factors": [
+        "F_local_grouping_precedence",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "A_anchor",
+        "B_measurement",
+        "D_shadow"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "A_anchor",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "B_measurement",
+          "feedback_mode": "minimal",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        },
+        {
+          "channel": "D_shadow",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_grouping_precedence_measure_001",
+          "it_regex_grouping_precedence_measure_002"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "A_anchor",
+            "B_measurement",
+            "D_shadow"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_mcq_outcome",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_concat_measure_resp_mcq_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "mcq_outcome"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "measurement"
+      },
+      "tags": {
+        "family_kind": "measurement"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_concat_measure_resp_mcq_v1"
+      ],
+      "default_feedback_policy_ref": "fb_none_measurement",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_grouping_precedence_teach",
+      "commitment_id": "cm_regex_grouping_precedence",
+      "family_kind": "teaching",
+      "target_factors": [
+        "F_local_grouping_precedence",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "C_learning"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "C_learning",
+          "feedback_mode": "full",
+          "hints_allowed": true,
+          "max_hints": 3,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "static_bank",
+        "refs": [
+          "it_regex_grouping_precedence_teach_001"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "C_learning"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_mcq_outcome",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_concat_measure_resp_mcq_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "mcq_outcome"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "intent": "teaching"
+      },
+      "tags": {
+        "family_kind": "teaching"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_concat_measure_resp_mcq_v1"
+      ],
+      "default_feedback_policy_ref": "fb_tutorial_basic",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    },
+    {
+      "probe_family_id": "pf_regex_adversarial_placeholder",
+      "commitment_id": "cm_regex_kleene_star",
+      "family_kind": "adversarial",
+      "target_factors": [
+        "F_rel_star_vs_plus",
+        "F_strategy_pattern_match_shortcut"
+      ],
+      "allowed_channels": [
+        "D_shadow"
+      ],
+      "channel_constraints": [
+        {
+          "channel": "D_shadow",
+          "feedback_mode": "none",
+          "hints_allowed": false,
+          "max_hints": 0,
+          "metadata": {}
+        }
+      ],
+      "item_source": {
+        "source_kind": "generator_bank",
+        "refs": [
+          "gen_regex_adversarial_pairs_v1"
+        ],
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "outcome_semantics",
+            "expectation": "must_hold",
+            "rationale": "Outcome semantics are stable across family delivery contexts.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_variation",
+            "expectation": "may_vary",
+            "rationale": "Surface phrasing may vary while preserving outcome semantics.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_context_channel_declared",
+            "source_path": "item.tags.context_channel",
+            "comparator": "in_set",
+            "value": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "calibration_contract": {
+        "inclusion_rules": {
+          "eligible_channels": [
+            "D_shadow"
+          ],
+          "eligible_assistance_modes": [
+            "closed_book",
+            "open_book",
+            "tool_assisted",
+            "mixed"
+          ],
+          "require_closed_book": false,
+          "exclude_residual_flags": [
+            "spec_underdetermined"
+          ],
+          "metadata": {}
+        },
+        "strata_axes": [
+          {
+            "axis_id": "evidence_channel",
+            "derivation_source": "attempt_field",
+            "derivation_path": "attempt.evidence_channel",
+            "allowed_values": [
+              "A_anchor",
+              "B_measurement",
+              "C_learning",
+              "D_shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "assistance_mode_derived",
+            "derivation_source": "telemetry_derived",
+            "derivation_path": "attempt.assistance_mode_derived",
+            "allowed_values": [
+              "closed_book",
+              "open_book",
+              "tool_assisted",
+              "mixed"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "context_tags",
+            "derivation_source": "ir_tags",
+            "derivation_path": "item.tags.context_channel",
+            "allowed_values": [
+              "anchor",
+              "measurement",
+              "learning",
+              "shadow"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          },
+          {
+            "axis_id": "intervention_level",
+            "derivation_source": "feedback_trace",
+            "derivation_path": "feedback.trace.level",
+            "allowed_values": [
+              "none",
+              "light",
+              "heavy"
+            ],
+            "unknown_value": "unknown",
+            "metadata": {}
+          }
+        ],
+        "calibration_target_projection": {
+          "projection_id": "proj_slot_pattern",
+          "projection_type": "feature_projection",
+          "source_surface": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "mapping_rules": [
+            {
+              "target": "primary_outcome",
+              "source_features": [
+                "slot_pattern"
+              ],
+              "rule": "identity",
+              "metadata": {}
+            }
+          ],
+          "metadata": {}
+        },
+        "metadata": {},
+        "calibration_pool_policy": {
+          "baseline_assistance_modes": [
+            "closed_book"
+          ],
+          "monitor_only_assistance_modes": [],
+          "stratify_by_assistance_mode": true,
+          "metadata": {}
+        }
+      },
+      "metadata": {
+        "active_runtime": false
+      },
+      "tags": {
+        "family_kind": "adversarial"
+      },
+      "measurement_surface_refs": [
+        "ms_pf_regex_literals_measure_resp_slots_v1"
+      ],
+      "default_feedback_policy_ref": "fb_none_measurement",
+      "assistance_contract": {
+        "allowed_assistance_modes": [
+          "closed_book",
+          "open_book",
+          "tool_assisted",
+          "mixed"
+        ],
+        "diagnostic_eligible_assistance_modes": [
+          "closed_book"
+        ],
+        "measurement_preserving_assistance_modes": [
+          "closed_book"
+        ],
+        "tool_use_allowed": true,
+        "metadata": {}
+      }
+    }
+  ],
+  "items": [
+    {
+      "item_id": "it_regex_literals_measure_001",
+      "probe_family_id": "pf_regex_literals_measure",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "secondary_target_factors": [],
+        "metadata": {}
+      },
+      "prompt": "Regex `a`. Fill slot a with yes/no for string `a`. Fill slot b with yes/no for string `aa`.",
+      "channel_tags": [
+        "shadow"
+      ],
+      "role_tags": [],
+      "form_memberships": [
+        "form_shadow_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.05,
+        "signature": {
+          "prompt_len_tokens": 18,
+          "slots_count": 2,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "yes",
+          "no"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "shadow",
+        "role": "none",
+        "probe_kind": "M1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_literals_measure_002",
+      "probe_family_id": "pf_regex_literals_measure",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "secondary_target_factors": [],
+        "metadata": {}
+      },
+      "prompt": "Regex `b`. Fill slot a with yes/no for epsilon. Fill slot b with yes/no for string `b`.",
+      "channel_tags": [
+        "measurement"
+      ],
+      "role_tags": [
+        "holdout"
+      ],
+      "form_memberships": [
+        "form_holdout_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.08,
+        "signature": {
+          "prompt_len_tokens": 17,
+          "slots_count": 2,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "no",
+          "yes"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "measurement",
+        "role": "holdout",
+        "probe_kind": "M2"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_literals_teach_001",
+      "probe_family_id": "pf_regex_literals_teach",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "secondary_target_factors": [],
+        "metadata": {}
+      },
+      "prompt": "Reminder: a literal matches exactly one symbol. Regex `a`. Fill slot a for `a`. Fill slot b for `b`.",
+      "channel_tags": [
+        "learning"
+      ],
+      "role_tags": [],
+      "form_memberships": [],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.02,
+        "signature": {
+          "prompt_len_tokens": 19,
+          "slots_count": 2,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "yes",
+          "no"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "learning",
+        "role": "none",
+        "probe_kind": "T1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_concat_measure_001",
+      "probe_family_id": "pf_regex_concat_measure",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_concat_boundary"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Which option describes regex `ab`? choice_a: matches `a` or `b`. choice_b: matches only the two-character string `ab`. choice_c: matches any string starting with `a`. choice_d: matches epsilon.",
+      "channel_tags": [
+        "anchor"
+      ],
+      "role_tags": [],
+      "form_memberships": [
+        "form_anchor_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.06,
+        "signature": {
+          "prompt_len_tokens": 27,
+          "slots_count": 1,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_b",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "anchor",
+        "role": "none",
+        "probe_kind": "M1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_concat_measure_002",
+      "probe_family_id": "pf_regex_concat_measure",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_concat_boundary"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Which string is matched by `ab` but not by `a|b`? choice_a: `a`. choice_b: `b`. choice_c: `ab`. choice_d: epsilon.",
+      "channel_tags": [
+        "measurement"
+      ],
+      "role_tags": [
+        "holdout"
+      ],
+      "form_memberships": [
+        "form_holdout_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.08,
+        "signature": {
+          "prompt_len_tokens": 18,
+          "slots_count": 1,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_c",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "measurement",
+        "role": "holdout",
+        "probe_kind": "M2"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_concat_teach_001",
+      "probe_family_id": "pf_regex_concat_teach",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_concat_boundary"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Reminder: concatenation means the symbols must appear in order. Which string matches `ab`? choice_a: `a`. choice_b: `ab`. choice_c: `b`. choice_d: `aa`.",
+      "channel_tags": [
+        "learning"
+      ],
+      "role_tags": [],
+      "form_memberships": [],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.03,
+        "signature": {
+          "prompt_len_tokens": 21,
+          "slots_count": 1,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_b",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "learning",
+        "role": "none",
+        "probe_kind": "T1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_alternation_measure_001",
+      "probe_family_id": "pf_regex_alternation_measure",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_alternation_scope"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Regex `a|b`. Fill slot a with yes/no for string `a`. Fill slot b with yes/no for string `ab`.",
+      "channel_tags": [
+        "shadow"
+      ],
+      "role_tags": [],
+      "form_memberships": [
+        "form_shadow_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.07,
+        "signature": {
+          "prompt_len_tokens": 18,
+          "slots_count": 2,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "yes",
+          "no"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "shadow",
+        "role": "none",
+        "probe_kind": "M1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_alternation_measure_002",
+      "probe_family_id": "pf_regex_alternation_measure",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_alternation_scope"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Regex `a|bc`. Fill slot a with yes/no for string `bc`. Fill slot b with yes/no for string `abc`.",
+      "channel_tags": [
+        "measurement"
+      ],
+      "role_tags": [
+        "holdout"
+      ],
+      "form_memberships": [
+        "form_holdout_regex_v2"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.09,
+        "signature": {
+          "prompt_len_tokens": 18,
+          "slots_count": 2,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "yes",
+          "no"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "measurement",
+        "role": "holdout",
+        "probe_kind": "M2"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_alternation_teach_001",
+      "probe_family_id": "pf_regex_alternation_teach",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_alternation_scope"
+        ],
+        "secondary_target_factors": [],
+        "metadata": {}
+      },
+      "prompt": "Reminder: alternation means either branch can match. Regex `a|b`. Fill slot a for `b`. Fill slot b for `ab`.",
+      "channel_tags": [
+        "learning"
+      ],
+      "role_tags": [],
+      "form_memberships": [],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.03,
+        "signature": {
+          "prompt_len_tokens": 19,
+          "slots_count": 2,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "yes",
+          "no"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "learning",
+        "role": "none",
+        "probe_kind": "T1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_kleene_star_measure_001",
+      "probe_family_id": "pf_regex_kleene_star_measure",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_star_semantics"
+        ],
+        "secondary_target_factors": [
+          "F_rel_star_vs_plus"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Which statement about `a*` is correct? choice_a: it matches one or more `a`. choice_b: it matches epsilon, `a`, and `aa`. choice_c: it matches only epsilon. choice_d: it matches exactly one `a`.",
+      "channel_tags": [
+        "anchor"
+      ],
+      "role_tags": [],
+      "form_memberships": [
+        "form_anchor_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.08,
+        "signature": {
+          "prompt_len_tokens": 31,
+          "slots_count": 1,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_b",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "anchor",
+        "role": "none",
+        "probe_kind": "M1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_kleene_star_measure_002",
+      "probe_family_id": "pf_regex_kleene_star_measure",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_rel_star_vs_plus"
+        ],
+        "secondary_target_factors": [
+          "F_local_star_semantics"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Which string is matched by `a*` but not by `a+`? choice_a: `a`. choice_b: `aa`. choice_c: epsilon. choice_d: `aaa`.",
+      "channel_tags": [
+        "measurement"
+      ],
+      "role_tags": [
+        "holdout"
+      ],
+      "form_memberships": [
+        "form_holdout_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.07,
+        "signature": {
+          "prompt_len_tokens": 18,
+          "slots_count": 1,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_c",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "measurement",
+        "role": "holdout",
+        "probe_kind": "M2"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_kleene_star_teach_001",
+      "probe_family_id": "pf_regex_kleene_star_teach",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_star_semantics"
+        ],
+        "secondary_target_factors": [
+          "F_rel_star_vs_plus"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Reminder: star allows zero or more repetitions. Which string matches `(ab)*`? choice_a: epsilon. choice_b: `aba`. choice_c: `a`. choice_d: `b`.",
+      "channel_tags": [
+        "learning"
+      ],
+      "role_tags": [],
+      "form_memberships": [],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.03,
+        "signature": {
+          "prompt_len_tokens": 19,
+          "slots_count": 1,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_a",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "learning",
+        "role": "none",
+        "probe_kind": "T1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_kleene_plus_measure_001",
+      "probe_family_id": "pf_regex_kleene_plus_measure",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_rel_star_vs_plus"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Regex `a+`. Fill slot a with yes/no for epsilon. Fill slot b with yes/no for string `a`.",
+      "channel_tags": [
+        "shadow"
+      ],
+      "role_tags": [],
+      "form_memberships": [
+        "form_shadow_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.07,
+        "signature": {
+          "prompt_len_tokens": 17,
+          "slots_count": 2,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "no",
+          "yes"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "shadow",
+        "role": "none",
+        "probe_kind": "M1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_kleene_plus_measure_002",
+      "probe_family_id": "pf_regex_kleene_plus_measure",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_rel_star_vs_plus"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Regex `a+`. Fill slot a with yes/no for string `aa`. Fill slot b with yes/no for epsilon.",
+      "channel_tags": [
+        "measurement"
+      ],
+      "role_tags": [
+        "holdout"
+      ],
+      "form_memberships": [
+        "form_holdout_regex_v2"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.08,
+        "signature": {
+          "prompt_len_tokens": 17,
+          "slots_count": 2,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "yes",
+          "no"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "measurement",
+        "role": "holdout",
+        "probe_kind": "M2"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_kleene_plus_teach_001",
+      "probe_family_id": "pf_regex_kleene_plus_teach",
+      "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "rubric_ref": "rub_slots_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_rel_star_vs_plus"
+        ],
+        "secondary_target_factors": [],
+        "metadata": {}
+      },
+      "prompt": "Reminder: plus requires at least one repetition. Regex `(ab)+`. Fill slot a for `ab`. Fill slot b for epsilon.",
+      "channel_tags": [
+        "learning"
+      ],
+      "role_tags": [],
+      "form_memberships": [],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.03,
+        "signature": {
+          "prompt_len_tokens": 19,
+          "slots_count": 2,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "slots",
+        "slot_answer_key": [
+          "yes",
+          "no"
+        ],
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "learning",
+        "role": "none",
+        "probe_kind": "T1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_grouping_precedence_measure_001",
+      "probe_family_id": "pf_regex_grouping_precedence_measure",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_grouping_precedence"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Which regex matches `ab` and `ac`, but not `a`? choice_a: `ab|c`. choice_b: `a(b|c)`. choice_c: `(ab)|c`. choice_d: `a|bc`.",
+      "channel_tags": [
+        "anchor"
+      ],
+      "role_tags": [],
+      "form_memberships": [
+        "form_anchor_regex_v1"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.09,
+        "signature": {
+          "prompt_len_tokens": 17,
+          "slots_count": 1,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_b",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "anchor",
+        "role": "none",
+        "probe_kind": "M1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_grouping_precedence_measure_002",
+      "probe_family_id": "pf_regex_grouping_precedence_measure",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_grouping_precedence"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Which string is matched by `a(b|c)` but not by `ab|c`? choice_a: `ab`. choice_b: `c`. choice_c: `ac`. choice_d: epsilon.",
+      "channel_tags": [
+        "measurement"
+      ],
+      "role_tags": [
+        "holdout"
+      ],
+      "form_memberships": [
+        "form_holdout_regex_v2"
+      ],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.1,
+        "signature": {
+          "prompt_len_tokens": 18,
+          "slots_count": 1,
+          "binding_ops": 2,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_c",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "measurement",
+        "role": "holdout",
+        "probe_kind": "M2"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    },
+    {
+      "item_id": "it_regex_grouping_precedence_teach_001",
+      "probe_family_id": "pf_regex_grouping_precedence_teach",
+      "measurement_surface_ref": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "rubric_ref": "rub_mcq_regex_v1",
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_local_grouping_precedence"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "prompt": "Reminder: parentheses change scope before concatenation. Which regex matches `ab` or `c`, but not `ac`? choice_a: `a(b|c)`. choice_b: `ab|c`. choice_c: `a|bc`. choice_d: `a(bc)`.",
+      "channel_tags": [
+        "learning"
+      ],
+      "role_tags": [],
+      "form_memberships": [],
+      "item_params": {
+        "difficulty_offset_init": 0.0,
+        "ambiguity_risk_init": 0.04,
+        "signature": {
+          "prompt_len_tokens": 23,
+          "slots_count": 1,
+          "binding_ops": 1,
+          "step_count_est": 1,
+          "metadata": {}
+        },
+        "metadata": {}
+      },
+      "grading_material": {
+        "response_kind": "mcq",
+        "correct_choice_id": "choice_b",
+        "metadata": {}
+      },
+      "feedback_policy_ref": null,
+      "dual_use_allowed": false,
+      "active": true,
+      "tags": {
+        "context_channel": "learning",
+        "role": "none",
+        "probe_kind": "T1"
+      },
+      "metadata": {
+        "difficulty": "micro"
+      }
+    }
+  ],
+  "forms": [
+    {
+      "form_id": "form_holdout_regex_v1",
+      "items": [
+        "it_regex_literals_measure_002",
+        "it_regex_concat_measure_002",
+        "it_regex_kleene_star_measure_002"
+      ],
+      "evidence_channel": "B_measurement",
+      "delivery_role": "holdout",
+      "fixed_form": true,
+      "closed_book_only": true,
+      "max_presented_items": 3,
+      "consumption_policy": "rotate_forms",
+      "feedback_policy_ref": "fb_delayed_holdout",
+      "form_tags": [
+        "holdout"
+      ],
+      "tags": {},
+      "active": true,
+      "metadata": {
+        "parallel_form": "A"
+      }
+    },
+    {
+      "form_id": "form_holdout_regex_v2",
+      "items": [
+        "it_regex_alternation_measure_002",
+        "it_regex_kleene_plus_measure_002",
+        "it_regex_grouping_precedence_measure_002"
+      ],
+      "evidence_channel": "B_measurement",
+      "delivery_role": "holdout",
+      "fixed_form": true,
+      "closed_book_only": true,
+      "max_presented_items": 3,
+      "consumption_policy": "rotate_forms",
+      "feedback_policy_ref": "fb_delayed_holdout",
+      "form_tags": [
+        "holdout"
+      ],
+      "tags": {},
+      "active": true,
+      "metadata": {
+        "parallel_form": "B"
+      }
+    },
+    {
+      "form_id": "form_anchor_regex_v1",
+      "items": [
+        "it_regex_concat_measure_001",
+        "it_regex_kleene_star_measure_001",
+        "it_regex_grouping_precedence_measure_001"
+      ],
+      "evidence_channel": "A_anchor",
+      "delivery_role": "anchor",
+      "fixed_form": true,
+      "closed_book_only": true,
+      "max_presented_items": 3,
+      "consumption_policy": "none",
+      "feedback_policy_ref": "fb_none_measurement",
+      "form_tags": [
+        "anchor"
+      ],
+      "tags": {},
+      "active": true,
+      "metadata": {
+        "format": "fixed"
+      }
+    },
+    {
+      "form_id": "form_shadow_regex_v1",
+      "items": [
+        "it_regex_literals_measure_001",
+        "it_regex_alternation_measure_001",
+        "it_regex_kleene_plus_measure_001"
+      ],
+      "evidence_channel": "D_shadow",
+      "delivery_role": "shadow",
+      "fixed_form": true,
+      "closed_book_only": false,
+      "max_presented_items": 3,
+      "consumption_policy": "none",
+      "feedback_policy_ref": "fb_none_measurement",
+      "form_tags": [
+        "shadow"
+      ],
+      "tags": {},
+      "active": true,
+      "metadata": {
+        "format": "ultra_short"
+      }
+    }
+  ],
+  "generators": [
+    {
+      "generator_id": "gen_regex_adversarial_pairs_v1",
+      "probe_family_id": "pf_regex_adversarial_placeholder",
+      "generator_version": "1.0.0",
+      "parameter_schema": {
+        "pair_templates": [
+          {
+            "base_regex": "a*",
+            "contrast_regex": "a+",
+            "diagnostic_strings": [
+              "",
+              "a",
+              "aa"
+            ]
+          },
+          {
+            "base_regex": "ab|c",
+            "contrast_regex": "a(b|c)",
+            "diagnostic_strings": [
+              "ab",
+              "ac",
+              "c"
+            ]
+          }
+        ],
+        "answer_templates": {
+          "slot_answer_key": [
+            "yes",
+            "no"
+          ]
+        },
+        "seed_material": [
+          "commitment_id",
+          "attempt_id"
+        ],
+        "perturbation_budget": 1
+      },
+      "determinism_contract": {
+        "mode": "seeded",
+        "seed_strategy": "run_id_attempt_id",
+        "metadata": {}
+      },
+      "invariance_contract": {
+        "axes": [
+          {
+            "axis_id": "language_membership",
+            "expectation": "must_hold",
+            "rationale": "Generated variants must preserve language membership semantics.",
+            "metadata": {}
+          },
+          {
+            "axis_id": "surface_form",
+            "expectation": "may_vary",
+            "rationale": "Generator output may vary in surface form.",
+            "metadata": {}
+          }
+        ],
+        "metadata": {},
+        "operational_constraints": [
+          {
+            "constraint_id": "c_generator_surface_variation",
+            "source_path": "generator.parameter_schema.pattern_templates",
+            "comparator": "in_set",
+            "value": [
+              "a*",
+              "a+",
+              "(ab)*",
+              "a|b"
+            ],
+            "metadata": {}
+          }
+        ]
+      },
+      "grading_contract": {
+        "rubric_ref": "rub_slots_regex_v1",
+        "metadata": {},
+        "response_schema_ref": "resp_slots_v1",
+        "measurement_surface_ref": "ms_pf_regex_literals_measure_resp_slots_v1",
+        "solution_material_contract": {
+          "response_kind": "slots",
+          "derivation_source": "generator_params",
+          "source_path": "generator.parameter_schema.answer_templates",
+          "required_fields": [
+            "slot_answer_key"
+          ],
+          "metadata": {}
+        }
+      },
+      "active": true,
+      "metadata": {
+        "micro_corpus": true
+      },
+      "instance_binding_contract": {
+        "item_instance_id_required": true,
+        "generator_id_required": true,
+        "generator_version_required": true,
+        "seed_required": true,
+        "rendered_payload_hash_required": true,
+        "artifact_pointer_required": false,
+        "metadata": {}
+      },
+      "target_factor_binding": {
+        "primary_target_factors": [
+          "F_rel_star_vs_plus"
+        ],
+        "secondary_target_factors": [
+          "F_strategy_pattern_match_shortcut"
+        ],
+        "metadata": {}
+      },
+      "adversarial_contract": {
+        "generation_mode": "seeded_minimal_pairs",
+        "perturbation_axes": [
+          {
+            "axis_id": "quantifier_variant",
+            "description": "Swap star and plus while keeping the rest of the regex fixed.",
+            "allowed_values": [
+              "star_to_plus",
+              "plus_to_star"
+            ],
+            "metadata": {}
+          },
+          {
+            "axis_id": "grouping_scope_variant",
+            "description": "Move parentheses to create a minimal-pair scope change.",
+            "allowed_values": [
+              "ungrouped_to_grouped",
+              "grouped_to_ungrouped"
+            ],
+            "metadata": {}
+          }
+        ],
+        "max_perturbation_axes_per_instance": 1,
+        "metadata": {}
+      }
+    }
+  ],
+  "feedback_policies": [
+    {
+      "feedback_policy_id": "fb_none_measurement",
+      "rules": {
+        "mode": "none"
+      },
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "feedback_policy_id": "fb_delayed_holdout",
+      "rules": {
+        "mode": "delayed",
+        "delay_attempts": 1
+      },
+      "active": true,
+      "metadata": {}
+    },
+    {
+      "feedback_policy_id": "fb_tutorial_basic",
+      "rules": {
+        "mode": "worked_example_then_retry"
+      },
+      "active": true,
+      "metadata": {}
+    }
+  ],
+  "content_migrations": [],
+  "metadata": {
+    "domain": "regex",
+    "stage": "v0.2"
+  },
+  "tag_vocab": {
+    "item_tags": {
+      "context_channel": [
+        "anchor",
+        "measurement",
+        "learning",
+        "shadow"
+      ],
+      "role": [
+        "none",
+        "holdout",
+        "adversarial"
+      ],
+      "probe_kind": [
+        "M1",
+        "M2",
+        "T1"
+      ]
+    },
+    "family_tags": {
+      "family_kind": [
+        "measurement",
+        "teaching",
+        "holdout",
+        "anchor",
+        "shadow",
+        "adversarial"
+      ]
+    },
+    "commitment_tags": {
+      "domain": [
+        "regex"
+      ]
+    },
+    "metadata": {},
+    "delivery_tags": {
+      "form_tags": {},
+      "generator_tags": {},
+      "metadata": {},
+      "artifact_tags": {}
+    }
+  },
+  "measurement_surfaces": [
+    {
+      "measurement_surface_id": "ms_pf_regex_literals_measure_resp_slots_v1",
+      "observation_schema_ref": "obs_schema_slots_v1",
+      "response_schema_ref": "resp_slots_v1",
+      "obs_binding": {
+        "obs_encoder_version": "obsenc.v0.2.0",
+        "hypothesis_space_hash": "hyp.obs_schema_slots_v1.resp_slots_v1.v0.2",
+        "metadata": {}
+      },
+      "compatibility_class": "safe_minor",
+      "metadata": {},
+      "rubric_ref": "rub_slots_regex_v1",
+      "observation_schema_semantics_hash": "sha256:94a7ae7c7cfeaca25deae9ffb8209c6997d49381cac88c6c4b1f9cfcd9bc570e",
+      "canonicalization_hash": "sha256:066e9f9d5ddc8ed6ae36086c60fc61f0d8a41a9b9f71aa89f95462d6e4d44c93",
+      "parse_ir_hash": "sha256:4ec169808d0b0af2c33c8ccabd744ed2a8bd516d3e5f806f10f0489b42c7b9df",
+      "rubric_semantics_hash": "sha256:9657d5d3a750d3d5da9ec38f6868cf582dc1f58649d54ab5a5540c595ae076cb"
+    },
+    {
+      "measurement_surface_id": "ms_pf_regex_concat_measure_resp_mcq_v1",
+      "observation_schema_ref": "obs_schema_mcq_v1",
+      "response_schema_ref": "resp_mcq_v1",
+      "obs_binding": {
+        "obs_encoder_version": "obsenc.v0.2.0",
+        "hypothesis_space_hash": "hyp.obs_schema_mcq_v1.resp_mcq_v1.v0.2",
+        "metadata": {}
+      },
+      "compatibility_class": "safe_minor",
+      "metadata": {},
+      "rubric_ref": "rub_mcq_regex_v1",
+      "observation_schema_semantics_hash": "sha256:fa3394c10a35226deec29d79660149eef67dfecb5a57ce61ebe0910996734e3f",
+      "canonicalization_hash": "sha256:3c870ecb503ce8127abe175d588758cf26cdcf81b03e1d36b8c9f7f4647473f0",
+      "parse_ir_hash": "sha256:d33e250f742415b5338f7be5ce5a187bd262d799155c14e910aa96aaa4198b06",
+      "rubric_semantics_hash": "sha256:97b520eeabbe8d539d7b7f7b5f825b22fcbea331f40f7cbc400ce42895b7137b"
+    }
+  ],
+  "channel_default_feedback_policies": [
+    {
+      "channel": "A_anchor",
+      "feedback_policy_ref": "fb_none_measurement",
+      "metadata": {}
+    },
+    {
+      "channel": "B_measurement",
+      "feedback_policy_ref": "fb_none_measurement",
+      "metadata": {}
+    },
+    {
+      "channel": "C_learning",
+      "feedback_policy_ref": "fb_tutorial_basic",
+      "metadata": {}
+    },
+    {
+      "channel": "D_shadow",
+      "feedback_policy_ref": "fb_none_measurement",
+      "metadata": {}
+    }
+  ],
+  "delivery_artifacts": [
+    {
+      "artifact_id": "anchor_bank_regex_core",
+      "artifact_kind": "anchor_bank",
+      "bindings": [
+        {
+          "binding_kind": "measurement_surface",
+          "ref_id": "ms_pf_regex_concat_measure_resp_mcq_v1",
+          "metadata": {}
+        },
+        {
+          "binding_kind": "measurement_surface",
+          "ref_id": "ms_pf_regex_literals_measure_resp_slots_v1",
+          "metadata": {}
+        }
+      ],
+      "tags": {},
+      "active": true,
+      "metadata": {
+        "form_refs": [
+          "form_anchor_regex_v1"
+        ],
+        "scope": "regex_micro_corpus"
+      }
+    },
+    {
+      "artifact_id": "sentinel_fixture_regex_slots",
+      "artifact_kind": "sentinel_fixture",
+      "bindings": [
+        {
+          "binding_kind": "rubric",
+          "ref_id": "rub_slots_regex_v1",
+          "metadata": {}
+        }
+      ],
+      "tags": {},
+      "active": true,
+      "metadata": {
+        "cases": [
+          {
+            "case_id": "correct",
+            "response": {
+              "slots": {
+                "a": "yes",
+                "b": "no"
+              }
+            },
+            "expected_outcome": "all_correct"
+          },
+          {
+            "case_id": "misconception",
+            "response": {
+              "slots": {
+                "a": "yes",
+                "b": "yes"
+              }
+            },
+            "expected_outcome": "partial"
+          },
+          {
+            "case_id": "malformed",
+            "response": {
+              "slots": {
+                "a": 1,
+                "b": null
+              }
+            },
+            "expected_outcome": "all_incorrect"
+          }
+        ]
+      }
+    },
+    {
+      "artifact_id": "sentinel_fixture_regex_mcq",
+      "artifact_kind": "sentinel_fixture",
+      "bindings": [
+        {
+          "binding_kind": "rubric",
+          "ref_id": "rub_mcq_regex_v1",
+          "metadata": {}
+        }
+      ],
+      "tags": {},
+      "active": true,
+      "metadata": {
+        "cases": [
+          {
+            "case_id": "correct",
+            "response": {
+              "choice": "choice_b"
+            },
+            "expected_outcome": "correct"
+          },
+          {
+            "case_id": "misconception",
+            "response": {
+              "choice": "choice_a"
+            },
+            "expected_outcome": "incorrect"
+          },
+          {
+            "case_id": "malformed",
+            "response": {
+              "choice": ""
+            },
+            "expected_outcome": "incorrect"
+          }
+        ]
+      }
+    }
+  ],
+  "feedback_policy_precedence": {
+    "order": [
+      "item",
+      "form",
+      "probe_family",
+      "commitment",
+      "channel_default"
+    ],
+    "metadata": {}
+  }
+}

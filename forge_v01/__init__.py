@@ -7,3 +7,7 @@ from .mutation_guard import MutationGuard
 from .replay_engine import ReplayEngine, ReplayResult, TimelineReplayResult
 from .gate_runner import GateRunner, GateResult
 from .obs_vocab_registry import ObservationVocabularyRegistry
+from .content_ir_hashing import compute_content_ir_release_hash
+from .content_ir_loader import load_content_ir_bundle, load_and_validate_content_ir_bundle
+from .content_ir_registry import ContentIRRegistry
+from .content_ir_validator import validate_content_ir_bundle
