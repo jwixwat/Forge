@@ -84,12 +84,12 @@ Verification predicates in this document use these terms:
 | INV-SEM-DET-001 | Deterministic-first grading | v0.3 | declared |
 | INV-SEM-CBG-002 | Closed-book gating for diagnosis | v2.0 | declared |
 | SOFT-SEM-CBG-000 | Pre-enforcement diagnosis debt prevention default | v0.x | soft_enforced |
-| INV-SEM-RES-003 | Residuals are mechanical | v0.6 | declared |
+| INV-SEM-RES-003 | Residuals are mechanical | v0.4 | declared |
 | INV-EPI-CAL-004 | Posterior predictive checks run and logged | v1.1 | declared |
 | INV-EPI-CAL-004B | Calibration governs diagnosis authority | v1.1 | declared |
 | INV-EPI-EXP-005A | Propensity logging support exists | v0.1 | declared |
 | INV-EPI-EXP-005B | Entropy/support floor enforced | v1.2 | declared |
-| INV-OPS-SEN-006 | Sentinel fixtures pass | v0.8 | declared |
+| INV-OPS-SEN-006 | Sentinel fixtures pass | v0.5 | declared |
 | INV-EPI-HLD-007 | Holdout contamination tracked | v2.1 | declared |
 | INV-EPI-ANC-008 | Anchor quotas enforced | v2.2 | declared |
 | INV-EPI-NIV-009 | Non-invariance guardrails active | v1.3 | declared |
@@ -147,7 +147,7 @@ Verification predicates in this document use these terms:
   - `and all(attempts, eq(attempt.residual_inputs.provenance.residual_formula_version, run_manifest(attempt.run_id).residual_formula_version))`
   - `all(attempts, recompute_residuals_from_primitives(attempt.residual_inputs.primitive_inputs, attempt.residual_inputs.provenance, run_manifest(attempt.run_id).residual_formula_version) == attempt.residuals)`
   - `and all(attempts, field(attempt.residual_inputs, "likelihood_sketch"))`.
-- Failure action: block merge for residual logic; quarantine affected items; fail v0.6 residual gate if primitive recomputation is not possible.
+- Failure action: block merge for residual logic; quarantine affected items; fail v0.4 residual gate if primitive recomputation is not possible.
 
 ### INV-EPI-CAL-004 Posterior predictive checks run and logged
 

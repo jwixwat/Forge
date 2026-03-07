@@ -3200,6 +3200,15 @@ def _validate_item_grading_material(value: Any, prefix: str, errors: list[str]) 
     elif response_kind == "mcq":
         if not _is_non_empty_string(value.get("correct_choice_id")):
             errors.append(f"{field_prefix}_correct_choice_id_invalid")
+        _validate_string_list(
+            value.get("allowed_choice_ids"),
+            f"{field_prefix}_allowed_choice_ids_invalid",
+            errors,
+            unique=True,
+            non_empty=True,
+        )
+        if isinstance(value.get("allowed_choice_ids"), list) and value.get("correct_choice_id") not in value.get("allowed_choice_ids"):
+            errors.append(f"{field_prefix}_correct_choice_id_not_in_allowed_choice_ids")
     elif response_kind == "numeric":
         if not isinstance(value.get("numeric_answer"), (int, float)):
             errors.append(f"{field_prefix}_numeric_answer_invalid")
@@ -3318,6 +3327,8 @@ def _validate_item_grading_material_compatibility(
         if rule_kind in {"exact_match", "choice_lookup"} and grading_material.get("response_kind") == "mcq":
             if not _is_non_empty_string(grading_material.get("correct_choice_id")):
                 errors.append(f"{prefix}_grading_material_missing_correct_choice_id_for_rule:{idx}")
+            if not isinstance(grading_material.get("allowed_choice_ids"), list):
+                errors.append(f"{prefix}_grading_material_missing_allowed_choice_ids_for_rule:{idx}")
         if rule_kind == "numeric_tolerance" and grading_material.get("response_kind") == "numeric":
             if not isinstance(grading_material.get("numeric_answer"), (int, float)):
                 errors.append(f"{prefix}_grading_material_missing_numeric_answer_for_rule:{idx}")

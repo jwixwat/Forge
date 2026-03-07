@@ -2,7 +2,7 @@
   "schema_version": "0.2.0",
   "release_id": "regex_v0_2_starter",
   "content_ir_version": "content.v2026.03.04.regex.v0.2",
-  "release_hash": "sha256:8198266955e5844114f8aff1def001766d8cbe0e7159dd9e9f6203b4644b531a",
+  "release_hash": "sha256:8917ce23a0bded168f9e4bbb343e6175b06dc190f5afff9ede041453f8b19817",
   "change_manifest": {
     "added": [
       {
@@ -3424,7 +3424,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_b",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -3478,7 +3484,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_c",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -3528,7 +3540,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_b",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -3743,7 +3761,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_b",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -3797,7 +3821,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_c",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -3847,7 +3877,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_a",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -4062,7 +4098,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_b",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -4116,7 +4158,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_c",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -4166,7 +4214,13 @@
       "grading_material": {
         "response_kind": "mcq",
         "correct_choice_id": "choice_b",
-        "metadata": {}
+        "metadata": {},
+        "allowed_choice_ids": [
+          "choice_a",
+          "choice_b",
+          "choice_c",
+          "choice_d"
+        ]
       },
       "feedback_policy_ref": null,
       "dual_use_allowed": false,
@@ -4612,7 +4666,8 @@
                 "b": null
               }
             },
-            "expected_outcome": "all_incorrect"
+            "expected_status": "invalid",
+            "expected_invalid_reason": "schema_invalid"
           }
         ]
       }
@@ -4650,7 +4705,8 @@
             "response": {
               "choice": ""
             },
-            "expected_outcome": "incorrect"
+            "expected_status": "invalid",
+            "expected_invalid_reason": "schema_invalid"
           }
         ]
       }

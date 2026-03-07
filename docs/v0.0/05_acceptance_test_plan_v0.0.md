@@ -110,7 +110,7 @@ For v0.0, tests are `tabletop_dry_run`:
 - Expected:
   - all required artifacts present
   - invariant ids and gate ids are consistent
-  - residual invariant and v0.6 gate require primitive-input recomputation, not derived-only recomputation
+  - residual invariant and v0.4 gate require primitive-input recomputation, not derived-only recomputation
 - Evidence artifact: `acceptance_report.at_5`.
 
 ### AT-6 Safe-Mode Auditability

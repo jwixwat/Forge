@@ -5,7 +5,9 @@ from __future__ import annotations
 from typing import Any, TYPE_CHECKING
 
 from .obs_vocab_registry import ObservationVocabularyRegistry
+from .measurement_frame import derive_obs_key_from_projection
 from . import audit_queries
+from .content_ir_constants import FEEDBACK_MODES
 from .constants import (
     ALLOWED_UPDATE_PARTITIONS,
     ASSISTANCE_MODES,
@@ -86,6 +88,8 @@ class ContractValidator:
     ) -> None:
         self._obs_vocab_registry = obs_vocab_registry or ObservationVocabularyRegistry()
         self._content_ir_registry = content_ir_registry
+        if obs_vocab_registry is None and self._content_ir_registry is not None:
+            self._synchronize_observation_vocab_registry()
 
     def replay_projection(self, manifest: dict[str, Any]) -> dict[str, Any]:
         projection: dict[str, Any] = {}
@@ -100,6 +104,12 @@ class ContractValidator:
             return self._content_ir_registry.deterministic_rubric_exists(content_ir_version, item_id)
         except KeyError:
             return None
+
+    def _synchronize_observation_vocab_registry(self) -> None:
+        if self._content_ir_registry is None:
+            return
+        for bundle in self._content_ir_registry.iter_bundles():
+            self._obs_vocab_registry.register_bundle(bundle)
 
     def precommit_projection_from_attempt(self, attempt: dict[str, Any]) -> dict[str, Any]:
         residual_inputs = attempt.get("residual_inputs", {})
@@ -133,6 +143,12 @@ class ContractValidator:
             "decision_traces": self._canonicalize_decision_traces(attempt.get("decision_traces")),
             "policy_decisions": self._canonicalize_policy_decisions(attempt.get("policy_decisions")),
             "likelihood_sketch": self._canonicalize_likelihood_sketch(likelihood_sketch),
+            "measurement_frame": self._canonicalize_measurement_frame(
+                attempt.get("measurement_frame")
+            ),
+            "measurement_subject": self._canonicalize_measurement_subject(
+                attempt.get("measurement_subject")
+            ),
             "version_pointers": attempt.get("version_pointers"),
         }
 
@@ -164,6 +180,12 @@ class ContractValidator:
             "decision_traces": self._canonicalize_decision_traces(precommit.get("decision_traces")),
             "policy_decisions": self._canonicalize_policy_decisions(precommit.get("policy_decisions")),
             "likelihood_sketch": self._canonicalize_likelihood_sketch(precommit.get("likelihood_sketch")),
+            "measurement_frame": self._canonicalize_measurement_frame(
+                precommit.get("measurement_frame")
+            ),
+            "measurement_subject": self._canonicalize_measurement_subject(
+                precommit.get("measurement_subject")
+            ),
             "version_pointers": precommit.get("version_pointers"),
         }
 
@@ -178,6 +200,12 @@ class ContractValidator:
             "precommit_hash": attempt.get("precommit_hash"),
             "semantic_commitment": self._canonicalize_semantic_commitment(
                 attempt.get("semantic_commitment")
+            ),
+            "measurement_frame": self._canonicalize_measurement_frame(
+                attempt.get("measurement_frame")
+            ),
+            "measurement_subject": self._canonicalize_measurement_subject(
+                attempt.get("measurement_subject")
             ),
             "telemetry_event_ids_intended": self._canonicalize_telemetry_event_ids(
                 attempt.get("telemetry_event_ids_intended")
@@ -196,10 +224,423 @@ class ContractValidator:
             "semantic_commitment": self._canonicalize_semantic_commitment(
                 precommit.get("semantic_commitment")
             ),
+            "measurement_frame": self._canonicalize_measurement_frame(
+                precommit.get("measurement_frame")
+            ),
+            "measurement_subject": self._canonicalize_measurement_subject(
+                precommit.get("measurement_subject")
+            ),
             "telemetry_event_ids_intended": self._canonicalize_telemetry_event_ids(
                 precommit.get("telemetry_event_ids_intended")
             ),
         }
+
+    def _canonicalize_measurement_frame(self, frame: Any) -> Any:
+        if not isinstance(frame, dict):
+            return frame
+        return {
+            "content_ir_version": frame.get("content_ir_version"),
+            "measurement_surface_id": frame.get("measurement_surface_id"),
+            "calibration_projection_id": frame.get("calibration_projection_id"),
+            "response_schema_id": frame.get("response_schema_id"),
+            "rubric_id": frame.get("rubric_id"),
+            "observation_schema_id": frame.get("observation_schema_id"),
+            "obs_encoder_version": frame.get("obs_encoder_version"),
+            "hypothesis_space_hash": frame.get("hypothesis_space_hash"),
+            "evidence_channel": frame.get("evidence_channel"),
+            "assistance_mode": frame.get("assistance_mode"),
+            "diagnosis_update_eligibility": frame.get("diagnosis_update_eligibility"),
+            "ineligibility_reason": frame.get("ineligibility_reason"),
+        }
+
+    def _canonicalize_measurement_subject(self, subject: Any) -> Any:
+        if not isinstance(subject, dict):
+            return subject
+        return {
+            "subject_kind": subject.get("subject_kind"),
+            "item_id": subject.get("item_id"),
+            "item_instance_id": subject.get("item_instance_id"),
+            "generator_id": subject.get("generator_id"),
+            "generator_version": subject.get("generator_version"),
+            "generator_seed": subject.get("generator_seed"),
+            "rendered_payload_hash": subject.get("rendered_payload_hash"),
+        }
+
+    def _validate_measurement_frame_binding(
+        self,
+        record: dict[str, Any],
+        manifest: dict[str, Any],
+        prefix: str,
+    ) -> list[str]:
+        frame = record.get("measurement_frame")
+        if frame is None:
+            return []
+        if not isinstance(frame, dict):
+            return [f"{prefix}_measurement_frame_not_object"]
+
+        required = {
+            "content_ir_version",
+            "measurement_surface_id",
+            "calibration_projection_id",
+            "response_schema_id",
+            "rubric_id",
+            "observation_schema_id",
+            "obs_encoder_version",
+            "hypothesis_space_hash",
+            "evidence_channel",
+            "assistance_mode",
+            "diagnosis_update_eligibility",
+            "ineligibility_reason",
+        }
+        missing = missing_required_fields(frame, required)
+        if missing:
+            return [f"{prefix}_measurement_frame_missing:" + ",".join(missing)]
+
+        errors: list[str] = []
+        for field in required:
+            if not is_non_empty_string(frame.get(field)):
+                errors.append(f"{prefix}_measurement_frame_{field}_invalid")
+
+        if frame.get("content_ir_version") != manifest.get("content_ir_version"):
+            errors.append(f"{prefix}_measurement_frame_content_ir_version_mismatch_manifest")
+
+        version_pointers = record.get("version_pointers")
+        if isinstance(version_pointers, dict):
+            if frame.get("content_ir_version") != version_pointers.get("content_ir_version"):
+                errors.append(
+                    f"{prefix}_measurement_frame_content_ir_version_mismatch_version_pointers"
+                )
+
+        if self._content_ir_registry is None or errors:
+            return errors
+
+        resolved = self._resolve_content_measurement_entities(record, manifest)
+        if resolved is None:
+            return errors + [f"{prefix}_measurement_frame_content_ir_lookup_failed"]
+        family = resolved["family"]
+        surface = resolved["surface"]
+        if family.get("probe_family_id") != record.get("probe_family_id"):
+            errors.append(f"{prefix}_measurement_frame_probe_family_mismatch_record")
+        if resolved["subject_kind"] == "static_item":
+            item = resolved["item"]
+            if item.get("measurement_surface_ref") != frame.get("measurement_surface_id"):
+                errors.append(f"{prefix}_measurement_frame_item_surface_mismatch")
+        else:
+            generator = resolved["generator"]
+            if generator.get("grading_contract", {}).get("measurement_surface_ref") != frame.get(
+                "measurement_surface_id"
+            ):
+                errors.append(f"{prefix}_measurement_frame_generator_surface_mismatch")
+        if surface.get("measurement_surface_id") not in family.get("measurement_surface_refs", []):
+            errors.append(f"{prefix}_measurement_frame_family_surface_missing")
+        if resolved["response_schema_id"] != frame.get("response_schema_id"):
+            errors.append(f"{prefix}_measurement_frame_response_schema_mismatch")
+        if resolved["rubric_id"] != frame.get("rubric_id"):
+            errors.append(f"{prefix}_measurement_frame_rubric_mismatch")
+        if surface.get("observation_schema_ref") != frame.get("observation_schema_id"):
+            errors.append(f"{prefix}_measurement_frame_observation_schema_mismatch")
+
+        calibration_contract = family.get("calibration_contract", {})
+        projection = (
+            calibration_contract.get("calibration_target_projection")
+            if isinstance(calibration_contract, dict)
+            else None
+        )
+        projection_id = projection.get("projection_id") if isinstance(projection, dict) else None
+        if projection_id != frame.get("calibration_projection_id"):
+            errors.append(f"{prefix}_measurement_frame_calibration_projection_mismatch")
+
+        obs_binding = surface.get("obs_binding", {})
+        if not isinstance(obs_binding, dict):
+            obs_binding = {}
+        if obs_binding.get("obs_encoder_version") != frame.get("obs_encoder_version"):
+            errors.append(f"{prefix}_measurement_frame_obs_encoder_version_mismatch")
+        if obs_binding.get("hypothesis_space_hash") != frame.get("hypothesis_space_hash"):
+            errors.append(f"{prefix}_measurement_frame_hypothesis_space_hash_mismatch")
+        if frame.get("evidence_channel") != record.get("evidence_channel", record.get("evidence_channel_intended")):
+            errors.append(f"{prefix}_measurement_frame_evidence_channel_mismatch_record")
+        if frame.get("assistance_mode") != record.get(
+            "assistance_mode_derived",
+            record.get("assistance_contract_intended"),
+        ):
+            errors.append(f"{prefix}_measurement_frame_assistance_mode_mismatch_record")
+        if frame.get("diagnosis_update_eligibility") != record.get(
+            "diagnosis_update_eligibility",
+            record.get("diagnosis_update_eligibility_intended"),
+        ):
+            errors.append(f"{prefix}_measurement_frame_diagnosis_update_eligibility_mismatch_record")
+        if frame.get("ineligibility_reason") != record.get(
+            "ineligibility_reason",
+            record.get("ineligibility_reason_intended"),
+        ):
+            errors.append(f"{prefix}_measurement_frame_ineligibility_reason_mismatch_record")
+        allowed_channels = family.get("allowed_channels")
+        if isinstance(allowed_channels, list) and frame.get("evidence_channel") not in allowed_channels:
+            errors.append(f"{prefix}_measurement_frame_channel_not_allowed_by_family")
+        assistance_contract = family.get("assistance_contract")
+        if isinstance(assistance_contract, dict):
+            allowed_modes = assistance_contract.get("allowed_assistance_modes")
+            if isinstance(allowed_modes, list) and frame.get("assistance_mode") not in allowed_modes:
+                errors.append(f"{prefix}_measurement_frame_assistance_mode_not_allowed_by_family")
+            if frame.get("diagnosis_update_eligibility") == "eligible":
+                diagnostic_modes = assistance_contract.get("diagnostic_eligible_assistance_modes")
+                if isinstance(diagnostic_modes, list) and frame.get("assistance_mode") not in diagnostic_modes:
+                    errors.append(f"{prefix}_measurement_frame_diagnostic_eligibility_not_allowed_by_family")
+        return errors
+
+    def _validate_measurement_subject_binding(
+        self,
+        record: dict[str, Any],
+        manifest: dict[str, Any],
+        prefix: str,
+    ) -> list[str]:
+        subject = record.get("measurement_subject")
+        if subject is None:
+            return []
+        if not isinstance(subject, dict):
+            return [f"{prefix}_measurement_subject_not_object"]
+        subject_kind = subject.get("subject_kind")
+        if subject_kind == "static_item":
+            if subject.get("item_id") != record.get("item_id"):
+                return [f"{prefix}_measurement_subject_item_id_mismatch_record"]
+            return []
+        if subject_kind == "generated_instance":
+            required = {
+                "item_instance_id",
+                "generator_id",
+                "generator_version",
+                "rendered_payload_hash",
+            }
+            missing = missing_required_fields(subject, required)
+            if missing:
+                return [f"{prefix}_measurement_subject_missing:" + ",".join(missing)]
+            errors: list[str] = []
+            if subject.get("item_instance_id") != record.get("item_id"):
+                errors.append(f"{prefix}_measurement_subject_item_instance_id_mismatch_record")
+            for field in required:
+                if not is_non_empty_string(subject.get(field)):
+                    errors.append(f"{prefix}_measurement_subject_{field}_invalid")
+            if self._content_ir_registry is not None and is_non_empty_string(manifest.get("content_ir_version")):
+                try:
+                    generator = self._content_ir_registry.resolve_generator(
+                        str(manifest.get("content_ir_version")),
+                        str(subject.get("generator_id")),
+                    )
+                    if str(subject.get("generator_version")) != str(generator.get("generator_version")):
+                        errors.append(f"{prefix}_measurement_subject_generator_version_mismatch")
+                except KeyError:
+                    errors.append(f"{prefix}_measurement_subject_generator_lookup_failed")
+            return errors
+        return [f"{prefix}_measurement_subject_kind_invalid"]
+
+    def _validate_measurement_adjudication(
+        self,
+        record: dict[str, Any],
+        prefix: str,
+    ) -> list[str]:
+        adjudication = record.get("measurement_adjudication")
+        if adjudication is None:
+            return []
+        if not isinstance(adjudication, dict):
+            return [f"{prefix}_measurement_adjudication_not_object"]
+        if not isinstance(adjudication.get("calibration_eligible"), bool):
+            return [f"{prefix}_measurement_adjudication_calibration_eligible_invalid"]
+        if not is_non_empty_string(adjudication.get("calibration_inclusion_reason")):
+            return [f"{prefix}_measurement_adjudication_calibration_inclusion_reason_invalid"]
+        frame = record.get("measurement_frame")
+        observation = record.get("observation")
+        if not isinstance(frame, dict) or not isinstance(observation, dict):
+            return []
+        structurally_eligible = False
+        if self._content_ir_registry is not None and is_non_empty_string(frame.get("content_ir_version")):
+            try:
+                family = self._content_ir_registry.resolve_probe_family(
+                    str(frame.get("content_ir_version")),
+                    str(record.get("probe_family_id", "")),
+                )
+                calibration_contract = family.get("calibration_contract", {})
+                inclusion_rules = (
+                    calibration_contract.get("inclusion_rules")
+                    if isinstance(calibration_contract, dict)
+                    else None
+                )
+                if isinstance(inclusion_rules, dict):
+                    eligible_channels = inclusion_rules.get("eligible_channels")
+                    eligible_assistance_modes = inclusion_rules.get("eligible_assistance_modes")
+                    require_closed_book = inclusion_rules.get("require_closed_book")
+                    if (
+                        isinstance(eligible_channels, list)
+                        and isinstance(eligible_assistance_modes, list)
+                        and frame.get("evidence_channel") in eligible_channels
+                        and frame.get("assistance_mode") in eligible_assistance_modes
+                        and not (require_closed_book is True and frame.get("assistance_mode") != "closed_book")
+                    ):
+                        structurally_eligible = True
+            except KeyError:
+                pass
+        expected_eligible = structurally_eligible and observation.get("observation_status") == "valid"
+        if adjudication.get("calibration_eligible") is not expected_eligible:
+            return [f"{prefix}_measurement_adjudication_calibration_eligible_mismatch"]
+        return []
+
+    def _validate_measurement_execution(
+        self,
+        record: dict[str, Any],
+        manifest: dict[str, Any],
+        prefix: str,
+    ) -> list[str]:
+        execution = record.get("measurement_execution")
+        if execution is None:
+            return []
+        if not isinstance(execution, dict):
+            return [f"{prefix}_measurement_execution_not_object"]
+        if execution.get("feedback_mode_applied") not in FEEDBACK_MODES:
+            return [f"{prefix}_measurement_execution_feedback_mode_invalid"]
+        hint_count_used = execution.get("hint_count_used")
+        if not is_strict_int(hint_count_used) or int(hint_count_used) < 0:
+            return [f"{prefix}_measurement_execution_hint_count_invalid"]
+        resolved = self._resolve_content_measurement_entities(record, manifest)
+        frame = record.get("measurement_frame")
+        if resolved is None or not isinstance(frame, dict):
+            return []
+        family = resolved["family"]
+        constraints = family.get("channel_constraints")
+        if not isinstance(constraints, list):
+            return [f"{prefix}_measurement_execution_channel_constraints_missing"]
+        constraint = None
+        for row in constraints:
+            if isinstance(row, dict) and row.get("channel") == frame.get("evidence_channel"):
+                constraint = row
+                break
+        if not isinstance(constraint, dict):
+            return [f"{prefix}_measurement_execution_channel_constraint_missing_for_frame"]
+        errors: list[str] = []
+        if execution.get("feedback_mode_applied") != constraint.get("feedback_mode"):
+            errors.append(f"{prefix}_measurement_execution_feedback_mode_mismatch_channel_constraint")
+        if constraint.get("hints_allowed") is False and int(hint_count_used) != 0:
+            errors.append(f"{prefix}_measurement_execution_hints_used_when_forbidden")
+        max_hints = constraint.get("max_hints")
+        if is_strict_int(max_hints) and int(hint_count_used) > int(max_hints):
+            errors.append(f"{prefix}_measurement_execution_hint_count_exceeds_channel_constraint")
+        decision_traces = record.get("decision_traces")
+        feedback_trace_count = 0
+        if isinstance(decision_traces, list):
+            feedback_trace_count = len(
+                [
+                    trace
+                    for trace in decision_traces
+                    if isinstance(trace, dict) and trace.get("trace_kind") == "feedback"
+                ]
+            )
+        if execution.get("feedback_mode_applied") == "none" and feedback_trace_count > 0:
+            errors.append(f"{prefix}_measurement_execution_feedback_trace_present_when_forbidden")
+        observation = record.get("observation")
+        if isinstance(observation, dict) and isinstance(observation.get("hint_used"), bool):
+            if bool(observation.get("hint_used")) != (int(hint_count_used) > 0):
+                errors.append(f"{prefix}_measurement_execution_hint_count_mismatch_observation")
+        return errors
+
+    def _resolve_observation_vocab_binding(
+        self,
+        record: dict[str, Any],
+        manifest: dict[str, Any],
+    ) -> tuple[str | None, str | None, str | None, str | None]:
+        frame = record.get("measurement_frame")
+        if isinstance(frame, dict):
+            obs_encoder_version = frame.get("obs_encoder_version")
+            hypothesis_space_hash = frame.get("hypothesis_space_hash")
+            calibration_projection_id = frame.get("calibration_projection_id")
+            measurement_surface_id = frame.get("measurement_surface_id")
+            if all(is_non_empty_string(v) for v in (obs_encoder_version, hypothesis_space_hash)):
+                return (
+                    str(obs_encoder_version),
+                    str(hypothesis_space_hash),
+                    str(calibration_projection_id) if is_non_empty_string(calibration_projection_id) else None,
+                    str(measurement_surface_id) if is_non_empty_string(measurement_surface_id) else None,
+                )
+        return (
+            manifest.get("obs_encoder_version"),
+            manifest.get("hypothesis_space_hash"),
+            None,
+            None,
+        )
+
+    def _record_is_content_backed(self, record: dict[str, Any], manifest: dict[str, Any]) -> bool:
+        if self._content_ir_registry is None:
+            return False
+        return self._resolve_content_measurement_entities(record, manifest) is not None
+
+    def _resolve_content_measurement_entities(
+        self,
+        record: dict[str, Any],
+        manifest: dict[str, Any],
+    ) -> dict[str, Any] | None:
+        if self._content_ir_registry is None:
+            return None
+        frame = record.get("measurement_frame")
+        content_ir_version = None
+        if isinstance(frame, dict) and is_non_empty_string(frame.get("content_ir_version")):
+            content_ir_version = str(frame.get("content_ir_version"))
+        elif is_non_empty_string(manifest.get("content_ir_version")):
+            content_ir_version = str(manifest.get("content_ir_version"))
+        if not content_ir_version:
+            return None
+        subject = record.get("measurement_subject")
+        try:
+            if isinstance(subject, dict) and subject.get("subject_kind") == "generated_instance":
+                generator_id = subject.get("generator_id")
+                if not is_non_empty_string(generator_id):
+                    return None
+                generator = self._content_ir_registry.resolve_generator(content_ir_version, str(generator_id))
+                family = self._content_ir_registry.resolve_probe_family(
+                    content_ir_version,
+                    str(generator.get("probe_family_id", "")),
+                )
+                grading_contract = generator.get("grading_contract", {})
+                surface = self._content_ir_registry.resolve_measurement_surface(
+                    content_ir_version,
+                    str(grading_contract.get("measurement_surface_ref", "")),
+                )
+                observation_schema = self._content_ir_registry.resolve_observation_schema(
+                    content_ir_version,
+                    str(surface.get("observation_schema_ref", "")),
+                )
+                return {
+                    "subject_kind": "generated_instance",
+                    "generator": generator,
+                    "family": family,
+                    "surface": surface,
+                    "observation_schema": observation_schema,
+                    "response_schema_id": grading_contract.get("response_schema_ref"),
+                    "rubric_id": grading_contract.get("rubric_ref"),
+                }
+            item_id = record.get("item_id")
+            if not is_non_empty_string(item_id):
+                return None
+            item = self._content_ir_registry.resolve_item(content_ir_version, str(item_id))
+            family = self._content_ir_registry.resolve_probe_family(
+                content_ir_version,
+                str(item.get("probe_family_id", "")),
+            )
+            surface = self._content_ir_registry.resolve_measurement_surface(
+                content_ir_version,
+                str(item.get("measurement_surface_ref", "")),
+            )
+            observation_schema = self._content_ir_registry.resolve_observation_schema(
+                content_ir_version,
+                str(surface.get("observation_schema_ref", "")),
+            )
+            return {
+                "subject_kind": "static_item",
+                "item": item,
+                "family": family,
+                "surface": surface,
+                "observation_schema": observation_schema,
+                "response_schema_id": item.get("response_schema_ref"),
+                "rubric_id": item.get("rubric_ref"),
+            }
+        except KeyError:
+            return None
 
     def _canonicalize_allowed_update_partitions(self, partitions: Any) -> Any:
         if not isinstance(partitions, list):
@@ -839,7 +1280,26 @@ class ContractValidator:
                 )
             )
             errors.extend(self._validate_diagnosis_update_semantics(attempt))
+            if self._record_is_content_backed(attempt, manifest):
+                if not isinstance(attempt.get("measurement_frame"), dict):
+                    errors.append("attempt_measurement_frame_required_for_content_backed_attempt")
+                if not isinstance(attempt.get("measurement_subject"), dict):
+                    errors.append("attempt_measurement_subject_required_for_content_backed_attempt")
+                if not isinstance(attempt.get("measurement_adjudication"), dict):
+                    errors.append("attempt_measurement_adjudication_required_for_content_backed_attempt")
+                if not isinstance(attempt.get("measurement_execution"), dict):
+                    errors.append("attempt_measurement_execution_required_for_content_backed_attempt")
+            errors.extend(self._validate_measurement_frame_binding(attempt, manifest, "attempt"))
+            errors.extend(self._validate_measurement_subject_binding(attempt, manifest, "attempt"))
+            errors.extend(self._validate_measurement_adjudication(attempt, "attempt"))
+            errors.extend(self._validate_measurement_execution(attempt, manifest, "attempt"))
             errors.extend(self._validate_observation(attempt.get("observation")))
+            errors.extend(
+                self._validate_runtime_measurement_observation(
+                    attempt,
+                    attempt.get("observation", {}),
+                )
+            )
 
             errors.extend(self._validate_grading_signals(attempt.get("grading_signals", {})))
             errors.extend(
@@ -848,6 +1308,7 @@ class ContractValidator:
                     manifest,
                     attempt.get("version_pointers", {}),
                     attempt.get("observation", {}),
+                    attempt,
                 )
             )
             decision_traces = attempt.get("decision_traces", [])
@@ -1083,6 +1544,17 @@ class ContractValidator:
                     allowed_partitions_intended_raw,
                 )
             )
+            if self._record_is_content_backed(precommit, manifest):
+                if not isinstance(precommit.get("measurement_frame"), dict):
+                    errors.append("attempt_precommit_measurement_frame_required_for_content_backed_precommit")
+                if not isinstance(precommit.get("measurement_subject"), dict):
+                    errors.append("attempt_precommit_measurement_subject_required_for_content_backed_precommit")
+            errors.extend(
+                self._validate_measurement_frame_binding(precommit, manifest, "attempt_precommit")
+            )
+            errors.extend(
+                self._validate_measurement_subject_binding(precommit, manifest, "attempt_precommit")
+            )
 
             if not is_non_empty_string(precommit.get("precommit_event_id")):
                 errors.append("attempt_precommit_event_id_invalid")
@@ -1140,6 +1612,7 @@ class ContractValidator:
                 precommit.get("likelihood_sketch", {}),
                 manifest,
                 {"slot_pattern": ""},
+                record=precommit,
             )
             errors.extend(likelihood_errors)
 
@@ -1964,14 +2437,194 @@ class ContractValidator:
             "llm_disagreement",
         }
         missing = missing_required_fields(grading, required)
-        return [("attempt_grading_signals_missing:" + ",".join(missing))] if missing else []
+        if missing:
+            return [("attempt_grading_signals_missing:" + ",".join(missing))]
+        errors: list[str] = []
+        scoring_resolution_status = grading.get("scoring_resolution_status")
+        if scoring_resolution_status is not None and scoring_resolution_status not in {
+            "valid",
+            "invalid",
+            "ambiguous",
+            "unsupported",
+            "abstained",
+        }:
+            errors.append("attempt_grading_signals_scoring_resolution_status_invalid")
+        candidate_path_count = grading.get("candidate_path_count")
+        if candidate_path_count is not None and not is_strict_int(candidate_path_count):
+            errors.append("attempt_grading_signals_candidate_path_count_invalid")
+        accepted_path_count = grading.get("accepted_path_count")
+        if accepted_path_count is not None and not is_strict_int(accepted_path_count):
+            errors.append("attempt_grading_signals_accepted_path_count_invalid")
+        observation_status = grading.get("observation_status")
+        if observation_status is not None and observation_status not in {
+            "valid",
+            "invalid",
+            "ambiguous",
+            "unsupported",
+        }:
+            errors.append("attempt_grading_signals_observation_status_invalid")
+        return errors
 
     def _validate_observation(self, observation: Any) -> list[str]:
         if not isinstance(observation, dict):
             return ["attempt_observation_not_object"]
-        if not is_non_empty_string(observation.get("slot_pattern")):
-            return ["attempt_observation_slot_pattern_invalid"]
-        return []
+        observation_status = observation.get("observation_status")
+        obs_key = observation.get("obs_key")
+        legacy_slot_pattern = observation.get("slot_pattern")
+        if observation_status is not None and observation_status not in {
+            "valid",
+            "invalid",
+            "ambiguous",
+            "unsupported",
+        }:
+            return ["attempt_observation_status_invalid"]
+        if observation_status == "valid":
+            if is_non_empty_string(obs_key) or is_non_empty_string(legacy_slot_pattern):
+                return []
+            return ["attempt_observation_obs_key_invalid"]
+        if observation_status in {"invalid", "ambiguous", "unsupported"}:
+            if is_non_empty_string(obs_key) or is_non_empty_string(legacy_slot_pattern):
+                return ["attempt_observation_nonvalid_must_not_emit_diagnostic_obs_key"]
+            if observation.get("observation_invalid_reason") is None:
+                return ["attempt_observation_invalid_reason_missing"]
+            if not is_non_empty_string(str(observation.get("observation_invalid_reason"))):
+                return ["attempt_observation_invalid_reason_invalid"]
+            return []
+        if is_non_empty_string(obs_key):
+            return []
+        if is_non_empty_string(legacy_slot_pattern):
+            return []
+        return ["attempt_observation_obs_key_invalid"]
+
+    def _validate_runtime_measurement_observation(
+        self,
+        record: dict[str, Any],
+        observation: dict[str, Any],
+    ) -> list[str]:
+        frame = record.get("measurement_frame")
+        if self._content_ir_registry is None or not isinstance(frame, dict) or not isinstance(observation, dict):
+            return []
+        content_ir_version = frame.get("content_ir_version")
+        measurement_surface_id = frame.get("measurement_surface_id")
+        calibration_projection_id = frame.get("calibration_projection_id")
+        if not all(is_non_empty_string(v) for v in (content_ir_version, measurement_surface_id, calibration_projection_id)):
+            return []
+        resolved = self._resolve_content_measurement_entities(
+            record,
+            {"content_ir_version": str(content_ir_version)},
+        )
+        if resolved is None:
+            return ["attempt_runtime_measurement_observation_lookup_failed"]
+        family = resolved["family"]
+        surface = resolved["surface"]
+        observation_schema = resolved["observation_schema"]
+
+        errors: list[str] = []
+        if resolved["subject_kind"] == "static_item":
+            item = resolved["item"]
+            if item.get("measurement_surface_ref") != measurement_surface_id:
+                errors.append("attempt_runtime_measurement_observation_item_surface_mismatch")
+        else:
+            generator = resolved["generator"]
+            if generator.get("grading_contract", {}).get("measurement_surface_ref") != measurement_surface_id:
+                errors.append("attempt_runtime_measurement_observation_generator_surface_mismatch")
+        if measurement_surface_id not in family.get("measurement_surface_refs", []):
+            errors.append("attempt_runtime_measurement_observation_family_surface_missing")
+        projection = family.get("calibration_contract", {}).get("calibration_target_projection")
+        if not isinstance(projection, dict) or projection.get("projection_id") != calibration_projection_id:
+            errors.append("attempt_runtime_measurement_observation_projection_mismatch")
+            return errors
+
+        feature_map: dict[str, dict[str, Any]] = {}
+        features = observation_schema.get("features")
+        if isinstance(features, list):
+            for feature in features:
+                if isinstance(feature, dict) and is_non_empty_string(feature.get("feature_id")):
+                    feature_map[str(feature["feature_id"])] = feature
+        outcome_surface_feature_ids = {
+            str(v)
+            for v in observation_schema.get("outcome_surface_feature_ids", [])
+            if is_non_empty_string(v)
+        }
+        system_fields = {"obs_key", "observation_status", "observation_invalid_reason"}
+        feature_values = {
+            key: value
+            for key, value in observation.items()
+            if key not in system_fields
+        }
+        unknown_fields = sorted(set(feature_values) - set(feature_map))
+        for field in unknown_fields:
+            errors.append(f"attempt_runtime_measurement_observation_unknown_feature:{field}")
+        for feature_id, value in feature_values.items():
+            feature = feature_map.get(feature_id)
+            if not isinstance(feature, dict):
+                continue
+            if not self._observation_feature_value_matches_spec(feature, value):
+                errors.append(
+                    f"attempt_runtime_measurement_observation_feature_value_invalid:{feature_id}"
+                )
+
+        observation_status = observation.get("observation_status")
+        if observation_status == "valid":
+            required_feature_ids = {
+                feature_id
+                for feature_id, feature in feature_map.items()
+                if feature.get("required") is True
+            }
+            for feature_id in sorted(required_feature_ids):
+                if feature_id not in feature_values:
+                    errors.append(
+                        f"attempt_runtime_measurement_observation_required_feature_missing:{feature_id}"
+                    )
+            for feature_id in sorted(outcome_surface_feature_ids):
+                if feature_id not in feature_values:
+                    errors.append(
+                        f"attempt_runtime_measurement_observation_outcome_surface_feature_missing:{feature_id}"
+                    )
+            expected_obs_key = derive_obs_key_from_projection(
+                projection,
+                feature_values,
+                observation_status="valid",
+            )
+            observed_obs_key = observation.get("obs_key") or observation.get("slot_pattern")
+            if expected_obs_key != observed_obs_key:
+                errors.append("attempt_runtime_measurement_observation_obs_key_mismatch_projection")
+        else:
+            for feature_id in sorted(outcome_surface_feature_ids):
+                if feature_id in feature_values:
+                    errors.append(
+                        f"attempt_runtime_measurement_observation_nonvalid_outcome_feature_present:{feature_id}"
+                    )
+        adjudication = record.get("measurement_adjudication")
+        if (
+            isinstance(adjudication, dict)
+            and adjudication.get("calibration_eligible") is True
+            and observation_status != "valid"
+        ):
+            errors.append("attempt_runtime_measurement_observation_invalid_cannot_be_calibration_eligible")
+        if surface.get("observation_schema_ref") != frame.get("observation_schema_id"):
+            errors.append("attempt_runtime_measurement_observation_schema_binding_mismatch")
+        return errors
+
+    def _observation_feature_value_matches_spec(
+        self,
+        feature: dict[str, Any],
+        value: Any,
+    ) -> bool:
+        value_type = feature.get("value_type")
+        if value_type == "categorical" or value_type == "string":
+            if not isinstance(value, str):
+                return False
+        elif value_type == "boolean":
+            if not isinstance(value, bool):
+                return False
+        elif value_type == "number":
+            if not is_strict_number(value):
+                return False
+        allowed_values = feature.get("allowed_values")
+        if isinstance(allowed_values, list) and allowed_values:
+            return value in allowed_values
+        return True
 
     def _validate_residual_primitive_inputs(self, primitive_inputs: dict[str, Any]) -> list[str]:
         errors: list[str] = []
@@ -2012,6 +2665,21 @@ class ContractValidator:
         parsing_confidence = primitive_inputs.get("parsing_confidence")
         if parsing_confidence is not None and not is_probability(parsing_confidence):
             errors.append("attempt_residual_primitive_parsing_confidence_invalid")
+        scoring_resolution_status = primitive_inputs.get("scoring_resolution_status")
+        if scoring_resolution_status is not None and scoring_resolution_status not in {
+            "valid",
+            "invalid",
+            "ambiguous",
+            "unsupported",
+            "abstained",
+        }:
+            errors.append("attempt_residual_primitive_scoring_resolution_status_invalid")
+        candidate_path_count = primitive_inputs.get("candidate_path_count")
+        if candidate_path_count is not None and not is_strict_int(candidate_path_count):
+            errors.append("attempt_residual_primitive_candidate_path_count_invalid")
+        accepted_path_count = primitive_inputs.get("accepted_path_count")
+        if accepted_path_count is not None and not is_strict_int(accepted_path_count):
+            errors.append("attempt_residual_primitive_accepted_path_count_invalid")
         return errors
 
     def _validate_residual_derived_inputs(self, derived_inputs: dict[str, Any]) -> list[str]:
@@ -2032,6 +2700,7 @@ class ContractValidator:
         manifest: dict[str, Any],
         version_pointers: dict[str, Any],
         observation: dict[str, Any],
+        record: dict[str, Any],
     ) -> list[str]:
         errors: list[str] = []
         required = {"primitive_inputs", "likelihood_sketch", "provenance", "derived_inputs"}
@@ -2079,6 +2748,7 @@ class ContractValidator:
             residual_inputs.get("likelihood_sketch", {}),
             manifest,
             observation,
+            record=record,
         )
         errors.extend(likelihood_errors)
         return errors
@@ -2088,6 +2758,7 @@ class ContractValidator:
         likelihood_sketch: dict[str, Any],
         manifest: dict[str, Any],
         observation: dict[str, Any],
+        record: dict[str, Any],
     ) -> list[str]:
         errors: list[str] = []
         if not isinstance(likelihood_sketch, dict):
@@ -2126,9 +2797,34 @@ class ContractValidator:
             errors.append("attempt_likelihood_distribution_invalid")
             return errors
 
-        obs_encoder_version = manifest.get("obs_encoder_version")
-        hypothesis_space_hash = manifest.get("hypothesis_space_hash")
-        known_vocab = self._obs_vocab_registry.get_vocab(obs_encoder_version, hypothesis_space_hash)
+        (
+            obs_encoder_version,
+            hypothesis_space_hash,
+            calibration_projection_id,
+            measurement_surface_id,
+        ) = self._resolve_observation_vocab_binding(record, manifest)
+        known_vocab = (
+            self._obs_vocab_registry.get_vocab(
+                obs_encoder_version,
+                hypothesis_space_hash,
+                calibration_projection_id=calibration_projection_id,
+                measurement_surface_id=measurement_surface_id,
+            )
+            if is_non_empty_string(obs_encoder_version) and is_non_empty_string(hypothesis_space_hash)
+            else None
+        )
+        if known_vocab is None and self._content_ir_registry is not None:
+            self._synchronize_observation_vocab_registry()
+            known_vocab = (
+                self._obs_vocab_registry.get_vocab(
+                    obs_encoder_version,
+                    hypothesis_space_hash,
+                    calibration_projection_id=calibration_projection_id,
+                    measurement_surface_id=measurement_surface_id,
+                )
+                if is_non_empty_string(obs_encoder_version) and is_non_empty_string(hypothesis_space_hash)
+                else None
+            )
         if known_vocab is None:
             errors.append("attempt_likelihood_vocab_binding_unknown")
             return errors
@@ -2165,9 +2861,14 @@ class ContractValidator:
             errors.append("attempt_observation_not_object")
             observed_key = None
         else:
-            observed_key = observation.get("slot_pattern")
+            observation_status = observation.get("observation_status")
+            observed_key = (
+                observation.get("obs_key") or observation.get("slot_pattern")
+                if observation_status in (None, "valid")
+                else None
+            )
         if isinstance(observed_key, str) and observed_key != "" and observed_key not in known_vocab:
-            errors.append("attempt_observation_slot_pattern_unknown")
+            errors.append("attempt_observation_obs_key_unknown")
         return errors
 
     def _validate_decision_traces(self, traces: Any) -> list[str]:
