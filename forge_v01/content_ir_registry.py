@@ -78,6 +78,9 @@ class ContentIRRegistry:
             raise KeyError(content_ir_version)
         return self._bundles_by_version[content_ir_version]
 
+    def iter_bundles(self) -> list[dict[str, Any]]:
+        return list(self._bundles_by_version.values())
+
     def resolve_commitment(self, content_ir_version: str, commitment_id: str) -> dict[str, Any]:
         indexes = self._get_indexes(content_ir_version)
         if commitment_id not in indexes.commitments:
@@ -89,6 +92,38 @@ class ContentIRRegistry:
         if probe_family_id not in indexes.probe_families:
             raise KeyError(probe_family_id)
         return indexes.probe_families[probe_family_id]
+
+    def resolve_rubric(self, content_ir_version: str, rubric_id: str) -> dict[str, Any]:
+        indexes = self._get_indexes(content_ir_version)
+        if rubric_id not in indexes.rubrics:
+            raise KeyError(rubric_id)
+        return indexes.rubrics[rubric_id]
+
+    def resolve_response_schema(self, content_ir_version: str, response_schema_id: str) -> dict[str, Any]:
+        indexes = self._get_indexes(content_ir_version)
+        if response_schema_id not in indexes.response_schemas:
+            raise KeyError(response_schema_id)
+        return indexes.response_schemas[response_schema_id]
+
+    def resolve_observation_schema(
+        self,
+        content_ir_version: str,
+        observation_schema_id: str,
+    ) -> dict[str, Any]:
+        indexes = self._get_indexes(content_ir_version)
+        if observation_schema_id not in indexes.observation_schemas:
+            raise KeyError(observation_schema_id)
+        return indexes.observation_schemas[observation_schema_id]
+
+    def resolve_measurement_surface(
+        self,
+        content_ir_version: str,
+        measurement_surface_id: str,
+    ) -> dict[str, Any]:
+        indexes = self._get_indexes(content_ir_version)
+        if measurement_surface_id not in indexes.measurement_surfaces:
+            raise KeyError(measurement_surface_id)
+        return indexes.measurement_surfaces[measurement_surface_id]
 
     def resolve_item(self, content_ir_version: str, item_id: str) -> dict[str, Any]:
         indexes = self._get_indexes(content_ir_version)
@@ -106,6 +141,12 @@ class ContentIRRegistry:
         if rubric is None:
             raise KeyError(rubric_ref)
         return bool(rubric.get("deterministic"))
+
+    def resolve_generator(self, content_ir_version: str, generator_id: str) -> dict[str, Any]:
+        indexes = self._get_indexes(content_ir_version)
+        if generator_id not in indexes.generators:
+            raise KeyError(generator_id)
+        return indexes.generators[generator_id]
 
     def _get_indexes(self, content_ir_version: str) -> _BundleIndexes:
         if content_ir_version not in self._indexes_by_version:

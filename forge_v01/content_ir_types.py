@@ -300,6 +300,7 @@ class ItemGradingMaterialSpec(TypedDict):
     response_kind: Literal["slots", "mcq", "numeric"]
     slot_answer_key: NotRequired[list[str]]
     correct_choice_id: NotRequired[str]
+    allowed_choice_ids: NotRequired[list[str]]
     numeric_answer: NotRequired[float]
     metadata: NotRequired[dict[str, Any]]
 

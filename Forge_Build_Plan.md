@@ -100,6 +100,9 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 **Goal:** run complete sessions with reliable logging, deterministic grading, evidence channels, basic belief updates, and drift fixtures-before sophisticated control.
 
+Execution order in Stage `v0` is now intentional rather than numeric. Version labels preserve
+semantic lineage; the section order below reflects current implementation priority.
+
 #### Risk register (v0)
 
 * Risk: "we can run a session" but logs aren't rich enough to support calibration/OPE later.
@@ -133,28 +136,13 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 
 #### V0.3 Deterministic grading + observation extraction
 
-* [ ] Score slot-based and MCQ formats deterministically where possible.
-* [ ] Produce observation patterns (slot pass/partial/fail + latency + hint usage).
-* [ ] Track rubric ambiguity counts (how many scoring paths fit).
+* [x] Score slot-based and MCQ formats deterministically where possible.
+* [x] Produce observation patterns (slot pass/partial/fail + latency + hint usage).
+* [x] Track rubric ambiguity counts (how many scoring paths fit).
 * Acceptance: deterministic scoring is stable; ambiguous cases are flagged (not silently graded).
 * Complexity: **M**.
 
-#### V0.4 LLM parsing fallback (firewalled, explicit, optional)
-
-* [ ] LLM used only for parsing/classification when required; user text treated as data.
-* [ ] Injection hardening and output validation are enforced.
-* [ ] Multi-pass support exists for high-stakes contexts (even if disabled by default).
-* Acceptance: LLM use is always logged and fixture-tested; deterministic-first still holds.
-* Complexity: **M**.
-
-#### V0.5 Feedback DSL execution + intervention logging
-
-* [ ] Execute feedback moves via policy rules (hints/retry/contrast/worked example/etc.).
-* [ ] Log feedback moves and hint levels as interventions (dose tracking begins now).
-* Acceptance: feedback execution is content-agnostic and fully traceable in logs.
-* Complexity: **M**.
-
-#### V0.6 Residuals - mechanical computation + routing invariants (early!)
+#### V0.4 Residuals - mechanical computation + routing invariants (early!)
 
 * [ ] Implement mechanical residual computations:
 
@@ -169,25 +157,40 @@ A content-agnostic **CLI tutoring engine** consuming versioned content IR produc
 * Acceptance: residuals are recomputable from logs; routing triggers are deterministic.
 * Complexity: **M**.
 
-#### V0.7 First belief update loop (simple but explicit)
-
-* [ ] Maintain per-commitment state (representation + factors + basic retention placeholders).
-* [ ] Use an explicit probe-family sensor model (even a small table) for updates.
-* Acceptance: belief updates are explainable, testable, and don't depend on "LLM said so."
-* Complexity: **M**.
-
-#### V0.8 Sentinel fixtures (fixed inputs) - CI gate + runtime self-test
+#### V0.5 Sentinel fixtures (fixed inputs) - CI gate + runtime self-test
 
 * [ ] Build fixture suite: correct/partial/incorrect/ambiguous/injection edge cases.
 * [ ] Run in CI for grading pipeline changes; periodically in runtime as self-test.
 * Acceptance: drift status is real and does not depend on learner behavior.
 * Complexity: **M**.
 
-#### V0.9 Sim harness skeleton (loop regression guard)
+#### V0.6 First belief update loop (simple but explicit)
+
+* [ ] Maintain per-commitment state (representation + factors + basic retention placeholders).
+* [ ] Use an explicit probe-family sensor model (even a small table) for updates.
+* Acceptance: belief updates are explainable, testable, and don't depend on "LLM said so."
+* Complexity: **M**.
+
+#### V0.7 Feedback DSL execution + intervention logging
+
+* [ ] Execute feedback moves via policy rules (hints/retry/contrast/worked example/etc.).
+* [ ] Log feedback moves and hint levels as interventions (dose tracking begins now).
+* Acceptance: feedback execution is content-agnostic and fully traceable in logs.
+* Complexity: **M**.
+
+#### V0.8 Sim harness skeleton (loop regression guard)
 
 * [ ] Implement a minimal simulator loop with 3-4 archetypes and grader noise.
 * [ ] Validate that routing doesn't thrash and residual routing works.
 * Acceptance: basic regressions caught in sim before touching real users.
+* Complexity: **M**.
+
+#### V0.9 LLM parsing fallback (firewalled, explicit, optional; deferred until re-evaluated)
+
+* [ ] LLM used only for parsing/classification when required; user text treated as data.
+* [ ] Injection hardening and output validation are enforced.
+* [ ] Multi-pass support exists for high-stakes contexts (even if disabled by default).
+* Acceptance: LLM use is always logged and fixture-tested; deterministic-first still holds.
 * Complexity: **M**.
 
 ---

@@ -195,6 +195,8 @@ def _precommit_projection(payload: dict) -> dict:
         "decision_traces": normalized_traces,
         "policy_decisions": normalized_decisions,
         "likelihood_sketch": normalized_likelihood,
+        "measurement_frame": payload.get("measurement_frame"),
+        "measurement_subject": payload.get("measurement_subject"),
         "version_pointers": payload["version_pointers"],
     }
 
@@ -209,6 +211,8 @@ def _precommit_envelope_projection(payload: dict) -> dict:
         "precommit_event_id": payload["precommit_event_id"],
         "precommit_hash": payload["precommit_hash"],
         "semantic_commitment": deepcopy(payload["semantic_commitment"]),
+        "measurement_frame": payload.get("measurement_frame"),
+        "measurement_subject": payload.get("measurement_subject"),
         "telemetry_event_ids_intended": sorted(payload["telemetry_event_ids_intended"]),
     }
 
@@ -226,6 +230,10 @@ def make_attempt(
     likelihood_sketch_overrides: dict | None = None,
     extra_decision_traces: list[dict] | None = None,
     extra_policy_decisions: list[dict] | None = None,
+    measurement_frame: dict | None = None,
+    measurement_subject: dict | None = None,
+    measurement_adjudication: dict | None = None,
+    measurement_execution: dict | None = None,
 ) -> dict:
     projection = replay_projection_from_manifest(manifest)
     if deterministic_policy:
@@ -355,6 +363,10 @@ def make_attempt(
         "policy_decisions": policy_decisions,
         "telemetry_event_ids": [f"tel_{attempt_id}_001", f"tel_{attempt_id}_002"],
         "telemetry_event_ids_intended": [f"tel_{attempt_id}_001", f"tel_{attempt_id}_002"],
+        "measurement_frame": deepcopy(measurement_frame) if isinstance(measurement_frame, dict) else None,
+        "measurement_subject": deepcopy(measurement_subject) if isinstance(measurement_subject, dict) else None,
+        "measurement_adjudication": deepcopy(measurement_adjudication) if isinstance(measurement_adjudication, dict) else None,
+        "measurement_execution": deepcopy(measurement_execution) if isinstance(measurement_execution, dict) else None,
         "version_pointers": projection,
         "idempotency": {"sequence_no": 1, "attempt_hash": "att_hash_0001"},
     }
@@ -402,6 +414,8 @@ def make_attempt_precommit(
         "decision_traces": deepcopy(attempt["decision_traces"]),
         "policy_decisions": deepcopy(attempt["policy_decisions"]),
         "likelihood_sketch": deepcopy(attempt["residual_inputs"]["likelihood_sketch"]),
+        "measurement_frame": deepcopy(attempt.get("measurement_frame")),
+        "measurement_subject": deepcopy(attempt.get("measurement_subject")),
         "version_pointers": deepcopy(attempt["version_pointers"]),
         "precommit_hash": attempt["precommit_hash"],
         "precommit_envelope_hash": "",

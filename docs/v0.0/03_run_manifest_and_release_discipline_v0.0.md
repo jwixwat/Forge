@@ -203,7 +203,7 @@ Promotion to higher environment requires:
   "sensor_model_version": "sensor.v0.1.0",
   "policy_version": "policy.v0.0.0",
   "engine_build_version": "engine.v0.0.0",
-  "residual_formula_version": "residual.v0.6.0",
+  "residual_formula_version": "residual.v0.4.0",
   "obs_encoder_version": "obsenc.v0.1.0",
   "hypothesis_space_hash": "hyp_hash_001",
   "decision_rng_version": "rng.v0.1.0",

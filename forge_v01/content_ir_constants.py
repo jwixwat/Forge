@@ -332,7 +332,13 @@ ITEM_PARAMS_OPTIONAL_FIELDS = {"metadata"}
 ITEM_PARAMS_ALLOWED_FIELDS = ITEM_PARAMS_REQUIRED_FIELDS | ITEM_PARAMS_OPTIONAL_FIELDS
 
 ITEM_GRADING_MATERIAL_REQUIRED_FIELDS = {"response_kind"}
-ITEM_GRADING_MATERIAL_OPTIONAL_FIELDS = {"slot_answer_key", "correct_choice_id", "numeric_answer", "metadata"}
+ITEM_GRADING_MATERIAL_OPTIONAL_FIELDS = {
+    "slot_answer_key",
+    "correct_choice_id",
+    "allowed_choice_ids",
+    "numeric_answer",
+    "metadata",
+}
 ITEM_GRADING_MATERIAL_ALLOWED_FIELDS = (
     ITEM_GRADING_MATERIAL_REQUIRED_FIELDS | ITEM_GRADING_MATERIAL_OPTIONAL_FIELDS
 )
